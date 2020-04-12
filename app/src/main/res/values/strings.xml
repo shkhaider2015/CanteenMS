@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">CanteenMS</string>
+    <string name="email">Email</string>
+    <string name="full_name">Full Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="navigation_register">Don\'t Have an account ? Sign Up here</string>
+    <string name="navigation_login">Already have an account ? Log in here</string>
 </resources>

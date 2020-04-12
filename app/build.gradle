@@ -31,8 +31,14 @@ dependencies {
 
     //Card View
     implementation "androidx.cardview:cardview:1.0.0"
-    
-    testImplementation 'junit:junit:4.12'
+
+    // Circle Image View
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // Picasso for taking images
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
