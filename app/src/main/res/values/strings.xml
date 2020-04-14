@@ -8,4 +8,5 @@
     <string name="log_in">Log In</string>
     <string name="navigation_register">Don\'t Have an account ? Sign Up here</string>
     <string name="navigation_login">Already have an account ? Log in here</string>
+    <string name="image">Image</string>
 </resources>
