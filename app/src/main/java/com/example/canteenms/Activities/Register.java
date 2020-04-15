@@ -2,11 +2,14 @@ package com.example.canteenms.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.canteenms.R;
 
@@ -48,12 +51,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         {
             case R.id.register_image:
                 // image logic
+                Toast.makeText(this, "Profile Selected", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.register_sign_up:
                 // sign up logic here
+                startActivity(new Intent(Register.this, Home.class));
+                finish();
                 break;
             case R.id.register_navigation:
                 // Navigation Logic
+                startActivity(new Intent(Register.this, Login.class));
                 break;
         }
     }

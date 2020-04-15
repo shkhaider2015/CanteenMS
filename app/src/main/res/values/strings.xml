@@ -9,4 +9,12 @@
     <string name="navigation_register">Don\'t Have an account ? Sign Up here</string>
     <string name="navigation_login">Already have an account ? Log in here</string>
     <string name="image">Image</string>
+    <string name="tea">Tea</string>
+    <string name="biryani">Biryani</string>
+    <string name="burger">Burger</string>
+    <string name="samosa">Samosa</string>
+    <string name="french_fries">French Fries</string>
+    <string name="salad">Salad</string>
+    <string name="omelette">Omelette</string>
+    <string name="cold_drink">Cold Drink</string>
 </resources>

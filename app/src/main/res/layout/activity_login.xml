@@ -49,13 +49,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:autofillHints="@string/email"
-                android:textColorHint="@color/edit_text_hint_color"
                 android:inputType="textEmailAddress"
                 android:layout_marginTop="15dp"
                 android:drawableStart="@drawable/ic_email_icon"
-                android:textColor="@color/colorPrimary"
                 android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorPrimary"
                 />
 
             <EditText
@@ -64,13 +61,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:autofillHints="@string/password"
-                android:textColorHint="@color/edit_text_hint_color"
-                android:textColor="@color/colorPrimary"
                 android:inputType="textPassword"
                 android:layout_marginTop="15dp"
                 android:drawableStart="@drawable/ic_password_icon"
                 android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorPrimary"
                 />
 
             <Button

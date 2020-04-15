@@ -2,6 +2,7 @@ package com.example.canteenms.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
     }
 
     private void init()
@@ -40,9 +42,12 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
         {
             case R.id.login_log_in:
                 // login logic
+                startActivity(new Intent(Login.this, Home.class));
+                finish();
                 break;
             case R.id.login_navigation:
                 // navigation Logic
+                startActivity(new Intent(Login.this, Register.class));
                 break;
         }
 

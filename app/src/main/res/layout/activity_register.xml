@@ -65,12 +65,9 @@
                 android:inputType="text"
                 android:hint="@string/full_name"
                 android:autofillHints="@string/full_name"
-                android:textColorHint="@color/edit_text_hint_color"
-                android:textColor="@color/colorPrimary"
                 android:layout_marginTop="30dp"
                 android:drawableStart="@drawable/ic_full_name_icon"
                 android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorPrimary"
                 />
 
             <EditText
@@ -80,12 +77,9 @@
                 android:inputType="textEmailAddress"
                 android:hint="@string/email"
                 android:autofillHints="@string/email"
-                android:textColorHint="@color/edit_text_hint_color"
-                android:textColor="@color/colorPrimary"
                 android:layout_marginTop="15dp"
                 android:drawableStart="@drawable/ic_email_icon"
                 android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorPrimary"
                 />
 
             <EditText
@@ -95,12 +89,9 @@
                 android:inputType="textPassword"
                 android:hint="@string/password"
                 android:autofillHints="@string/password"
-                android:textColorHint="@color/edit_text_hint_color"
-                android:textColor="@color/colorPrimary"
                 android:layout_marginTop="15dp"
                 android:drawableStart="@drawable/ic_password_icon"
                 android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorPrimary"
                 />
             <EditText
                 android:id="@+id/register_confirm_password"
@@ -109,12 +100,9 @@
                 android:inputType="textPassword"
                 android:hint="@string/confirm_password"
                 android:autofillHints="@string/confirm_password"
-                android:textColorHint="@color/edit_text_hint_color"
-                android:textColor="@color/colorPrimary"
                 android:layout_marginTop="15dp"
                 android:drawableStart="@drawable/ic_password_icon"
                 android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorPrimary"
                 />
 
             <Button

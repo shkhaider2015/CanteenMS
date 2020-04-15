@@ -1,9 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.Home">
+
+    <TextView
+        android:id="@+id/home_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Menu"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        />
+    <View
+        android:id="@+id/home_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:layout_constraintTop_toBottomOf="@id/home_menu"
+        android:background="@color/edit_text_hint_color"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/home_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:columnCount="2"
+        android:rowCount="4"
+        >
+
+        <LinearLayout
+            android:id="@+id/home_tea"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_mug"
+                android:contentDescription="@string/image"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tea"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/home_biryani"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="50dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_biryani"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/biryani"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/home_burger"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_burger"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/burger"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/home_samosa"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="50dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_samosa"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/samosa"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/home_french_fries"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_french_fries"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/french_fries"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/home_salad"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="50dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_vegetable"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/salad"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/home_omelette"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_omelette"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/omelette"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cold_drink"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="50dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_cold_drink"
+                android:contentDescription="@string/image"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cold_drink"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+
+
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
