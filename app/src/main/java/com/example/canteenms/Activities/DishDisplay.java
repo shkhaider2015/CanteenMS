@@ -44,6 +44,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
 
     private void loadLocalData()
     {
+        // Seriallaize object
         Dish dish =(Dish) getIntent().getSerializableExtra("object");
 
         assert dish != null;
