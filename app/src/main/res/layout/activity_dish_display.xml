@@ -55,6 +55,7 @@
         android:layout_marginStart="30dp"
         android:text="@string/select_quantity"
         android:textSize="30sp"
+        android:textColor="@color/black"
         />
 
     <EditText
@@ -64,14 +65,16 @@
         app:layout_constraintTop_toBottomOf="@id/display_text_quantity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/edit_bg"
         android:layout_marginTop="10dp"
         android:autofillHints="1"
         android:hint="@string/_1"
         android:padding="10dp"
+        android:paddingEnd="40dp"
+        android:paddingStart="10dp"
         android:textAlignment="center"
         android:drawableStart="@drawable/ic_quantity"
-        android:drawablePadding="10dp"
+        android:drawablePadding="30dp"
+        android:inputType="number"
         />
 
     <TextView
@@ -84,6 +87,7 @@
         android:layout_marginStart="30dp"
         android:text="@string/enter_location"
         android:textSize="30sp"
+        android:textColor="@color/black"
         />
 
     <EditText
@@ -93,13 +97,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/display_text_location"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginTop="10dp"
         android:autofillHints="@string/location_hint"
         android:hint="@string/location_hint"
         android:drawablePadding="10dp"
-        android:background="@drawable/edit_bg"
         android:drawableStart="@drawable/ic_location"
         android:inputType="text"
         />
