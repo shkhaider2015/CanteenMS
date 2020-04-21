@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import com.example.canteenms.Activities.Login;
 
 public class MainActivity extends AppCompatActivity
 {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
