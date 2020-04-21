@@ -17,4 +17,29 @@
     <string name="salad">Salad</string>
     <string name="omelette">Omelette</string>
     <string name="cold_drink">Cold Drink</string>
+    <string name="_12">12</string>
+    <string name="rs_12">Rs 12</string>
+    <string name="select_quantity">Select Quantity</string>
+    <string name="enter_location">Enter Location</string>
+    <string name="location_hint">e.g: male faculty room, first floor</string>
+    <string name="order">Order</string>
+    <string name="_1">1</string>
+
+
+    <string-array name="quantity_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+
 </resources>
