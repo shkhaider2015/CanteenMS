@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +15,18 @@ import android.widget.TextView;
 
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
+import com.example.canteenms.Utilities.Calculation;
 
-public class DishDisplay extends AppCompatActivity implements View.OnClickListener {
+public class DishDisplay extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+
+    private static final String TAG = "DishDisplay";
 
     private ImageView mDishImage;
     private TextView mDishName, mDishPrize;
     private EditText mQuantity, mLocation;
     private Button mOrder;
+    private Dish dish;
+    private boolean quantityAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +47,54 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         mOrder = findViewById(R.id.display_btn_order);
 
         mOrder.setOnClickListener(this);
+        mQuantity.addTextChangedListener(this);
+
+        quantityAlert = false;
 
     }
 
     private void loadLocalData()
     {
         // Seriallaize object
-        Dish dish =(Dish) getIntent().getSerializableExtra("object");
+        dish =(Dish) getIntent().getSerializableExtra("Object");
 
         assert dish != null;
         mDishImage.setImageResource(dish.getImage());
         mDishName.setText(dish.getDishName());
-        mDishPrize.setText(R.string.rateconcatenate + dish.getDishPrize());
+        String prize = "Rs : " + dish.getDishPrize();
+        mDishPrize.setText(prize);
     }
 
     @Override
     public void onClick(View v)
     {
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        String input = s.toString();
+        if (!input.isEmpty())
+        {
+            Integer quan = Integer.parseInt(s.toString());
+            Integer prize = dish.getDishPrize();
+            int total = quan * prize;
+            String display = "Rs : " + total;
+            mDishPrize.setText(display);
+
+            if (quan > 10)
+                quantityAlert = true;
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
 
     }
 }

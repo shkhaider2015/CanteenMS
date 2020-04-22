@@ -103,7 +103,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
         Dish dishobject = new Dish(dish, prize, image);
 
-        Intent intent = new Intent(Home.this, MainActivity.class);
+        Intent intent = new Intent(Home.this, DishDisplay.class);
         intent.putExtra("Object", dishobject);
         startActivity(intent);
 
