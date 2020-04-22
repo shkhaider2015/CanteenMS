@@ -42,4 +42,6 @@
     </string-array>
 
 
+    <string name="rateconcatenate">Rs : </string>
+
 </resources>

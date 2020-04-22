@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.canteenms.MainActivity;
+import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
 
 public class Home extends AppCompatActivity implements View.OnClickListener {
@@ -45,45 +46,65 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v)
     {
         String dish = null;
+        int prize = 0;
+        int image = 0;
 
         switch (v.getId())
         {
             case R.id.home_tea:
                 //
-                dish = "tea";
+                dish = "Tea";
+                prize = 25;
+                image = R.drawable.ic_mug;
                 break;
             case R.id.home_biryani:
                 //
-                dish = "biryani";
+                dish = "Biryani";
+                prize = 100;
+                image = R.drawable.ic_biryani;
                 break;
             case R.id.home_burger:
                 //
-                dish = "burger";
+                dish = "Burger";
+                prize = 50;
+                image = R.drawable.ic_burger;
                 break;
             case R.id.home_samosa:
                 //
-                dish = "samosa";
+                dish = "Samosa";
+                prize = 12;
+                image = R.drawable.ic_samosa;
                 break;
             case R.id.home_salad:
                 //
-                dish = "salad";
+                dish = "Salad";
+                prize = 20;
+                image = R.drawable.ic_vegetable;
                 break;
             case R.id.home_french_fries:
                 //
-                dish = "french_fries";
+                dish = "French Fries";
+                prize = 30;
+                image = R.drawable.ic_french_fries;
                 break;
             case R.id.home_omelette:
                 //
-                dish = "omelatte";
+                dish = "Omelette";
+                prize = 30;
+                image = R.drawable.ic_omelette;
                 break;
             case R.id.home_cold_drink:
                 //
-                dish = "cold_drink";
+                dish = "Cold Drink";
+                prize = 40;
+                image = R.drawable.ic_cold_drink;
                 break;
         }
 
+        Dish dishobject = new Dish(dish, prize, image);
+
         Intent intent = new Intent(Home.this, MainActivity.class);
-        intent.putExtra("dish", dish);
+        intent.putExtra("Object", dishobject);
         startActivity(intent);
 
     }

@@ -34,7 +34,7 @@
         />
 
     <TextView
-        android:id="@+id/display_rate"
+        android:id="@+id/display_prize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/display_dish"
@@ -49,7 +49,7 @@
         android:id="@+id/display_text_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/display_rate"
+        app:layout_constraintTop_toBottomOf="@id/display_prize"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
@@ -108,6 +108,7 @@
         />
 
     <Button
+        android:id="@+id/display_btn_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
