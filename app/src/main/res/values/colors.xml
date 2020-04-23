@@ -7,5 +7,6 @@
     <color name="edit_text_hint_color">#6A605658</color>
     <color name="yellow">#FFCE1A</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparant_white">#00FFFFFF</color>
     <color name="black">#000000</color>
 </resources>
