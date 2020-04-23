@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/image"
-        android:src="@drawable/canteen_logo"
+        android:src="@drawable/canteen_Logo"
         android:layout_marginTop="30dp"
         />
 
