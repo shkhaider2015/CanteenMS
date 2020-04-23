@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.canteenms.R;
+import com.example.canteenms.Utilities.Image;
 import com.example.canteenms.Utilities.Permission;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,6 +36,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private EditText mFullName, mEmail, mPassword, mConfirmPassword;
     private TextView mNavigationText;
     private Button mSignUp;
+
+    private String profileURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mProfileImageView.setOnClickListener(this);
         mSignUp.setOnClickListener(this);
         mNavigationText.setOnClickListener(this);
+
+        profileURL = null;
     }
 
     @Override
@@ -64,12 +70,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         {
             case R.id.register_image:
                 // image logic
-                Toast.makeText(this, "Profile Selected", Toast.LENGTH_SHORT).show();
+                chooseImageFromGallery();
                 break;
             case R.id.register_sign_up:
                 // sign up logic here
-                startActivity(new Intent(Register.this, Home.class));
-                finish();
+                registeration();
                 break;
             case R.id.register_navigation:
                 // Navigation Logic
@@ -86,6 +91,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         password = mPassword.getText().toString();
         confirmPassword = mConfirmPassword.getText().toString();
 
+        if (profileURL == null || profileURL.isEmpty())
+        {
+            Toast.makeText(getApplicationContext(), "Profile Image is not selected", Toast.LENGTH_SHORT).show();
+            mProfileImageView.requestFocus();
+            return;
+        }
         if (name.isEmpty())
         {
             mFullName.setError("Name is required");
@@ -123,6 +134,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
 
+        Toast.makeText(getApplicationContext(), "Everything is right", Toast.LENGTH_SHORT).show();
     }
 
     private void chooseImageFromGallery()
@@ -200,9 +212,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         if (requestCode == GALLERY_REQUEST_CODE)
         {
-            if (data != null)
+            if (data != null && data.getData() != null)
             {
-
+                Uri uri = data.getData();
+                mProfileImageView.setImageURI(uri);
+                profileURL = Image.getPath(getApplicationContext(), uri);
             }
             else
             {
