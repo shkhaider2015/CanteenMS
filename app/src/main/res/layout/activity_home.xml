@@ -266,4 +266,15 @@
 
     </ScrollView>
 
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu"
+        app:headerLayout="@layout/nav_header"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+    </android.support.design.widget.NavigationView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
