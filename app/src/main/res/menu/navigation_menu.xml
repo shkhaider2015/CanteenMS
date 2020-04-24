@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_profile"
-        android:title="Profile"
-        android:icon="@drawable/ic_profile"
-        />
-    <item android:id="@+id/menu_settings"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings"
-        />
-    <item android:id="@+id/mycart"
-        android:title="My Cart"/>
+    <group
+        android:id="@+id/menu_group_1"
+        android:checkableBehavior="none"
+        >
+        <item
+            android:id="@+id/menu_profile"
+            android:title="@string/profile"
+            android:icon="@drawable/ic_profile"
+            />
+        <item
+            android:id="@+id/menu_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_settings"
+            />
+        <item
+            android:id="@+id/menu_my_order"
+            android:title="@string/my_order"
+            />
+    </group>
+
+    <group
+        android:id="@+id/menu_group_2"
+        android:checkableBehavior="none"
+        >
+
+        <item
+            android:id="@+id/menu_logout"
+            android:title="@string/logout"
+            android:icon="@drawable/ic_logout"
+            />
+    </group>
 
 </menu>

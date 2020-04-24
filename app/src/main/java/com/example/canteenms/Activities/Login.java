@@ -50,7 +50,8 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
         {
             case R.id.login_log_in:
                 // login logic
-                login();
+                startActivity(new Intent(Login.this, Home.class));
+                finish();
                 break;
             case R.id.login_navigation:
                 // navigation Logic

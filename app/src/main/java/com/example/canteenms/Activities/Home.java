@@ -60,6 +60,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mHamburger.setOnClickListener(this);
        mNavigationView.setNavigationItemSelectedListener(this);
 
+       mNavigationView.setItemIconTintList(null);
+
     }
 
     @Override
