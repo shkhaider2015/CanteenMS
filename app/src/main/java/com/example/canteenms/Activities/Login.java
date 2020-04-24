@@ -98,8 +98,8 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
 
         mProgressbar.setVisibility(View.VISIBLE);
 
-//        startActivity(new Intent(Login.this, Home.class));
-//        finish();
+        startActivity(new Intent(Login.this, Home.class));
+        finish();
     }
 
 
