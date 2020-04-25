@@ -24,6 +24,24 @@ import android.widget.Toast;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Image;
 import com.example.canteenms.Utilities.Permission;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -38,6 +56,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private Button mSignUp;
 
     private String profileURL;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +82,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mNavigationText.setOnClickListener(this);
 
         profileURL = null;
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -85,7 +109,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     private void registeration()
     {
-        String name, email, password, confirmPassword;
+        final String name, email, password, confirmPassword;
         name = mFullName.getText().toString();
         email = mEmail.getText().toString();
         password = mPassword.getText().toString();
@@ -134,7 +158,66 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
 
-        Toast.makeText(getApplicationContext(), "Everything is right", Toast.LENGTH_SHORT).show();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful())
+                        {
+
+                            UserProfileChangeRequest changeRequest = new UserProfileChangeRequest
+                                    .Builder()
+                                    .setDisplayName(name)
+                                    .setPhotoUri(Uri.parse(profileURL))
+                                    .build();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            user.updateProfile(changeRequest);
+                            mAuth.updateCurrentUser(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid)
+                                        {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Now You Can Login",
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+                                            startActivity(new Intent(Register.this, Login.class));
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+
+
+
+                        }
+                        else
+                        {
+                            Log.w(TAG, "onComplete: ", task.getException());
+                            Toast.makeText(getApplicationContext(),
+                                    "Authentication Failed",
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        Toast.makeText(getApplicationContext(),
+                                "Check You Internet",
+                                Toast.LENGTH_SHORT)
+                                .show();
+
+                    }
+                });
+
     }
 
     private void chooseImageFromGallery()
@@ -214,7 +297,29 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         {
             if (data != null && data.getData() != null)
             {
+                int size = 0;
                 Uri uri = data.getData();
+
+                try {
+                    InputStream istream = getContentResolver().openInputStream(uri);
+                    assert istream != null;
+                    size = Image.getBytes(istream).length;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d(TAG, "onActivityResult: Image size : " + size);
+                if(size > 500000)
+                {
+                    Toast.makeText(getApplicationContext(),
+                            "Profile Picture Must Be 5KB or less",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                
                 mProfileImageView.setImageURI(uri);
                 profileURL = Image.getPath(getApplicationContext(), uri);
             }
@@ -228,6 +333,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
     }
+
+    private void uploadImage(byte[] data)
+    {
+        if (data == null)
+            return;
+
+        StorageReference mref = mStorageRef.child("Profile")
+                .child(Calendar.getInstance().getTimeInMillis() + ".jpg");
+
+        mref.putBytes(data)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uri = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                    }
+                });
+    }
+
 
     private void showMessageOkCancel(String message, DialogInterface.OnClickListener okListener)
     {

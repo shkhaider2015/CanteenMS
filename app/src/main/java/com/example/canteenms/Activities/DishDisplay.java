@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Calculation;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class DishDisplay extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -27,6 +29,9 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
     private Button mOrder;
     private Dish dish;
     private boolean quantityAlert;
+
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,8 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         mQuantity.addTextChangedListener(this);
 
         quantityAlert = false;
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
     }
 

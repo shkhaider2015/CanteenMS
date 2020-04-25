@@ -1,5 +1,6 @@
 package com.example.canteenms.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,14 +16,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.canteenms.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class Login extends AppCompatActivity  implements View.OnClickListener {
+
+    private static final String TAG = "Login";
 
     private EditText mEmail, mPassword;
     private Button mLogin;
     private TextView mNavigation;
     private ProgressBar mProgressbar;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +49,11 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
         mNavigation = findViewById(R.id.login_navigation);
         mProgressbar = findViewById(R.id.login_progress_bar);
 
+        mAuth = FirebaseAuth.getInstance();
+
         mLogin.setOnClickListener(this);
         mNavigation.setOnClickListener(this);
+
     }
 
     @Override
@@ -50,8 +63,9 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
         {
             case R.id.login_log_in:
                 // login logic
-                startActivity(new Intent(Login.this, Home.class));
-                finish();
+//                startActivity(new Intent(Login.this, Home.class));
+//                finish();
+                login();
                 break;
             case R.id.login_navigation:
                 // navigation Logic
@@ -99,8 +113,36 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
 
         mProgressbar.setVisibility(View.VISIBLE);
 
-        startActivity(new Intent(Login.this, Home.class));
-        finish();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful())
+                        {
+                            startActivity(new Intent(Login.this, Home.class));
+                            Login.this.finish();
+                        }
+                        else
+                        {
+                            Log.w(TAG, "onComplete: ", task.getException());
+                            Toast.makeText(getApplicationContext(),
+                                    "Login Failed",
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+                        Toast.makeText(getApplicationContext(),
+                                "Check Your Network",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+
     }
 
 

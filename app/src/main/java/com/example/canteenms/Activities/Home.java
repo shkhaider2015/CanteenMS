@@ -12,12 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.canteenms.MainActivity;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
+import com.example.canteenms.Utilities.Image;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,12 +32,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     DrawerLayout drawerLayout;
     NavigationView mNavigationView;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         init();
+        headerUI();
     }
     private void init()
     {
@@ -61,6 +69,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mNavigationView.setNavigationItemSelectedListener(this);
 
        mNavigationView.setItemIconTintList(null);
+       mAuth = FirebaseAuth.getInstance();
+       mUser = mAuth.getCurrentUser();
 
     }
 
@@ -132,5 +142,20 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                 break;
         }
         return true;
+    }
+
+    private void headerUI()
+    {
+        View header = mNavigationView.getHeaderView(0);
+        ImageView mHeaderImage = header.findViewById(R.id.header_profile_image);
+        TextView mName = header.findViewById(R.id.header_text_name);
+        TextView mEmail = header.findViewById(R.id.header_text_email);
+
+        if (mUser != null)
+        {
+            mHeaderImage.setImageURI(mUser.getPhotoUrl());
+            mName.setText(mUser.getDisplayName());
+            mEmail.setText(mUser.getEmail());
+        }
     }
 }
