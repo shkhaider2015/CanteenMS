@@ -12,15 +12,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.canteenms.Models.RegisterModel;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Image;
 import com.example.canteenms.Utilities.Permission;
@@ -32,6 +35,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -54,8 +58,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private EditText mFullName, mEmail, mPassword, mConfirmPassword;
     private TextView mNavigationText;
     private Button mSignUp;
+    private ProgressBar mProgress;
 
-    private String profileURL;
+    private byte[] img;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private StorageReference mStorageRef;
@@ -76,12 +82,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mConfirmPassword = findViewById(R.id.register_confirm_password);
         mNavigationText = findViewById(R.id.register_navigation);
         mSignUp = findViewById(R.id.register_sign_up);
+        mProgress = findViewById(R.id.register_progress);
 
         mProfileImageView.setOnClickListener(this);
         mSignUp.setOnClickListener(this);
         mNavigationText.setOnClickListener(this);
 
-        profileURL = null;
+
+        img = null;
+
+
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -107,6 +117,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+
+
     private void registeration()
     {
         final String name, email, password, confirmPassword;
@@ -115,7 +127,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         password = mPassword.getText().toString();
         confirmPassword = mConfirmPassword.getText().toString();
 
-        if (profileURL == null || profileURL.isEmpty())
+        if (img == null)
         {
             Toast.makeText(getApplicationContext(), "Profile Image is not selected", Toast.LENGTH_SHORT).show();
             mProfileImageView.requestFocus();
@@ -158,6 +170,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
 
+        progressBar(1);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -165,35 +178,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
                         if (task.isSuccessful())
                         {
-
-                            UserProfileChangeRequest changeRequest = new UserProfileChangeRequest
-                                    .Builder()
-                                    .setDisplayName(name)
-                                    .setPhotoUri(Uri.parse(profileURL))
-                                    .build();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            user.updateProfile(changeRequest);
-                            mAuth.updateCurrentUser(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid)
-                                        {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Now You Can Login",
-                                                    Toast.LENGTH_SHORT)
-                                                    .show();
-                                            startActivity(new Intent(Register.this, Login.class));
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                        }
-                                    });
-
-
-
+                            uploadImage(img);
                         }
                         else
                         {
@@ -202,6 +187,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                     "Authentication Failed",
                                     Toast.LENGTH_SHORT)
                                     .show();
+                            progressBar(0);
+                            return;
                         }
 
                     }
@@ -214,10 +201,70 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 "Check You Internet",
                                 Toast.LENGTH_SHORT)
                                 .show();
+                        progressBar(0);
+                        return;
 
                     }
                 });
 
+
+    }
+
+    private void getOnlineImage()
+    {
+        StorageReference imgRef = FirebaseStorage
+                .getInstance()
+                .getReference()
+                .child("Profile")
+                .child(mAuth.getCurrentUser().getUid());
+
+        imgRef.getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        updateUser(uri);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "onFailure: ", e);
+                        progressBar(0);
+                    }
+                });
+    }
+    private void updateUser(final Uri uri)
+    {
+        String name = mFullName.getText().toString();
+
+        UserProfileChangeRequest changeRequest = new UserProfileChangeRequest
+                .Builder()
+                .setDisplayName(name)
+                .setPhotoUri(uri)
+                .build();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        user.updateProfile(changeRequest);
+        mAuth.updateCurrentUser(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid)
+                    {
+                        Toast.makeText(getApplicationContext(),
+                                "Now You Can Login",
+                                Toast.LENGTH_SHORT)
+                                .show();
+
+                        uploadInfotoDatabase(uri);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "onFailure: ", e);
+                        progressBar(0);
+                    }
+                });
     }
 
     private void chooseImageFromGallery()
@@ -298,12 +345,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             if (data != null && data.getData() != null)
             {
                 int size = 0;
+                byte[] img = null;
                 Uri uri = data.getData();
 
                 try {
                     InputStream istream = getContentResolver().openInputStream(uri);
                     assert istream != null;
-                    size = Image.getBytes(istream).length;
+                    img = Image.getBytes(istream);
+                    size = img.length;
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -317,11 +366,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             "Profile Picture Must Be 5KB or less",
                             Toast.LENGTH_SHORT)
                             .show();
+                    img = null;
                     return;
                 }
-                
                 mProfileImageView.setImageURI(uri);
-                profileURL = Image.getPath(getApplicationContext(), uri);
             }
             else
             {
@@ -340,13 +388,54 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
 
         StorageReference mref = mStorageRef.child("Profile")
+                .child(mAuth.getCurrentUser().getUid())
                 .child(Calendar.getInstance().getTimeInMillis() + ".jpg");
 
         mref.putBytes(data)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> uri = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                        getOnlineImage();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "onFailure: ", e);
+                        progressBar(0);
+                    }
+                });
+    }
+
+    private void uploadInfotoDatabase(Uri uri)
+    {
+        String name, email, image;
+        name = mFullName.getText().toString();
+        email = mEmail.getText().toString();
+        image = uri.toString();
+
+        RegisterModel registerModel = new RegisterModel(image, name, email);
+
+        DatabaseReference mref = FirebaseDatabase
+                .getInstance()
+                .getReference();
+        mref.child(mAuth.getCurrentUser().getUid())
+                .child("Profile")
+                .setValue(registerModel)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
+                        if (task.isSuccessful()) {
+
+                            Log.d(TAG, "onComplete: Information upload to database successfully");
+                            progressBar(0);
+                            startActivity(new Intent(Register.this, Login.class));
+                        }
+                        else
+                            Log.d(TAG, "onComplete: Information uploading failure");
+                        progressBar(0);
+
                     }
                 });
     }
@@ -360,5 +449,22 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 .setNegativeButton("CANCEL", null)
                 .create()
                 .show();
+    }
+
+    private void progressBar(int x)
+    {
+        switch (x)
+        {
+            case 0:
+                //
+                mProgress.setVisibility(View.INVISIBLE);
+                mSignUp.setEnabled(true);
+                break;
+            case 1:
+                //
+                mProgress.setVisibility(View.VISIBLE);
+                mSignUp.setEnabled(false);
+                break;
+        }
     }
 }

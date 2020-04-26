@@ -11,14 +11,14 @@
 
     <ImageView
         android:id="@+id/register_logo"
-        android:layout_width="150dp"
-        android:layout_height="90dp"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/image"
         android:src="@drawable/canteen_logo"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         />
 
 
@@ -46,6 +46,16 @@
             android:paddingTop="2.5dp"
             android:paddingBottom="10dp"
             >
+
+            <ProgressBar
+                android:id="@+id/register_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimaryDark"
+                android:visibility="invisible"
+                />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/register_image"
