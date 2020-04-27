@@ -41,8 +41,14 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
         init();
     }
 
-    private void init()
-    {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null)
+            startActivity(new Intent(Login.this, Home.class));
+    }
+
+    private void init() {
         mEmail = findViewById(R.id.login_email);
         mPassword = findViewById(R.id.login_password);
         mLogin = findViewById(R.id.login_log_in);
@@ -57,10 +63,8 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.login_log_in:
                 // login logic
 //                startActivity(new Intent(Login.this, Home.class));
@@ -75,32 +79,27 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
 
     }
 
-    private void login()
-    {
+    private void login() {
         String email, password;
         email = mEmail.getText().toString();
         password = mPassword.getText().toString();
 
-        if (email.isEmpty())
-        {
+        if (email.isEmpty()) {
             mEmail.setError("Please Enter Your Email");
             mEmail.requestFocus();
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError("Email Is Not Valid");
             mEmail.requestFocus();
             return;
         }
-        if (password.isEmpty())
-        {
+        if (password.isEmpty()) {
             mPassword.setError("Please Enter Your Password");
             mPassword.requestFocus();
             return;
         }
-        if (password.length() <= 6)
-        {
+        if (password.length() <= 6) {
             mPassword.setError("Password Is Not Correct");
             mPassword.requestFocus();
             return;
@@ -111,38 +110,53 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
                 Toast.LENGTH_SHORT)
                 .show();
 
-        mProgressbar.setVisibility(View.VISIBLE);
+        progress(1);
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful())
-                        {
+                        if (task.isSuccessful()) {
                             startActivity(new Intent(Login.this, Home.class));
                             Login.this.finish();
-                        }
-                        else
-                        {
+                        } else {
                             Log.w(TAG, "onComplete: ", task.getException());
                             Toast.makeText(getApplicationContext(),
                                     "Login Failed",
                                     Toast.LENGTH_SHORT)
                                     .show();
+                            progress(0);
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
+                    public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getApplicationContext(),
                                 "Check Your Network",
                                 Toast.LENGTH_SHORT)
                                 .show();
+                        progress(0);
                     }
                 });
 
+    }
+
+    private void progress(int x)
+    {
+        switch (x)
+        {
+            case 1:
+                //
+                mProgressbar.setVisibility(View.VISIBLE);
+                mLogin.setEnabled(false);
+                break;
+            case 0:
+                //
+                mProgressbar.setVisibility(View.INVISIBLE);
+                mLogin.setEnabled(true);
+                break;
+        }
     }
 
 

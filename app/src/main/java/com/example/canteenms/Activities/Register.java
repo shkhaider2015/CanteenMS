@@ -216,7 +216,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 .getInstance()
                 .getReference()
                 .child("Profile")
-                .child(mAuth.getCurrentUser().getUid());
+                .child(mAuth.getCurrentUser().getUid())
+                .child("profile_picture.jpg");
 
         imgRef.getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -345,7 +346,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             if (data != null && data.getData() != null)
             {
                 int size = 0;
-                byte[] img = null;
                 Uri uri = data.getData();
 
                 try {
@@ -389,7 +389,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         StorageReference mref = mStorageRef.child("Profile")
                 .child(mAuth.getCurrentUser().getUid())
-                .child(Calendar.getInstance().getTimeInMillis() + ".jpg");
+                .child("profile_picture.jpg");
 
         mref.putBytes(data)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

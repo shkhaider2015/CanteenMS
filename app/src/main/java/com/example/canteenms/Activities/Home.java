@@ -22,6 +22,7 @@ import com.example.canteenms.Utilities.Image;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -140,6 +141,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                 //
                 Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.menu_logout:
+                //
+                startActivity(new Intent(Home.this, Login.class));
+                mAuth.signOut();
+                Home.this.finish();
+                break;
         }
         return true;
     }
@@ -153,7 +160,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
 
         if (mUser != null)
         {
-            mHeaderImage.setImageURI(mUser.getPhotoUrl());
+            Picasso
+                    .get()
+                    .load(mUser.getPhotoUrl())
+                    .placeholder(R.drawable.ic_profile_80_80)
+                    .into(mHeaderImage);
+//            mHeaderImage.setImageURI(mUser.getPhotoUrl());
             mName.setText(mUser.getDisplayName());
             mEmail.setText(mUser.getEmail());
         }
