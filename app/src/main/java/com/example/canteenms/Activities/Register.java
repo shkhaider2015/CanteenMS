@@ -419,7 +419,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         DatabaseReference mref = FirebaseDatabase
                 .getInstance()
                 .getReference();
-        mref.child(mAuth.getCurrentUser().getUid())
+        mref.child("Users")
+                .child(mAuth.getCurrentUser().getUid())
                 .child("Profile")
                 .setValue(registerModel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
