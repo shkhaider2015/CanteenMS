@@ -8,14 +8,17 @@ public class Order {
     private String clintLocation;
     private String clintName;
     private String clintUID;
+    private boolean accepted;
 
-    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID) {
+
+    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID, boolean accepted) {
         this.dishName = dishName;
         this.dishQuantity = dishQuantity;
         this.dishPrize = dishPrize;
         this.clintLocation = clintLocation;
         this.clintName = clintName;
         this.clintUID = clintUID;
+        this.accepted = accepted;
     }
 
     public String getDishName() {
@@ -40,5 +43,9 @@ public class Order {
 
     public String getClintUID() {
         return clintUID;
+    }
+    public boolean isAccepted()
+    {
+        return accepted;
     }
 }

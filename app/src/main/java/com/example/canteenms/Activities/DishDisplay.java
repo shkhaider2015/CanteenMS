@@ -158,7 +158,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         }
 
         progress(1);
-        uploadData(new Order(dishName, quantity, dishPrize, location, clintName, clintUID));
+        uploadData(new Order(dishName, quantity, dishPrize, location, clintName, clintUID, false));
 
     }
 
@@ -167,8 +167,8 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         DatabaseReference mRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
-                .child(mUser.getUid())
                 .child("Orders")
+                .child(mUser.getUid())
                 .child(Calendar.getInstance().getTimeInMillis() + "");
 
         mRef.setValue(order)
