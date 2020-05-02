@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class DishDisplay extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -130,13 +131,15 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
 
     private void sendOrder()
     {
-        String quantity, location, dishName, dishPrize, clintName, clintUID;
+        String quantity, location, dishName, dishPrize, clintName, clintUID, clintPhotouri;
         quantity = mQuantity.getText().toString();
         location = mLocation.getText().toString();
         dishName = mDishName.getText().toString();
         dishPrize = mDishPrize.getText().toString();
         clintName = mUser.getDisplayName();
         clintUID = mUser.getUid();
+        clintPhotouri = Objects.requireNonNull(mUser.getPhotoUrl()).toString();
+
 
         if (quantity.isEmpty())
         {
@@ -158,7 +161,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         }
 
         progress(1);
-        uploadData(new Order(dishName, quantity, dishPrize, location, clintName, clintUID, false));
+        uploadData(new Order(dishName, quantity, dishPrize, location, clintName, clintUID, clintPhotouri, false));
 
     }
 
@@ -195,6 +198,8 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
                         progress(0);
                     }
                 });
+
+
     }
 
     private void progress(int x)

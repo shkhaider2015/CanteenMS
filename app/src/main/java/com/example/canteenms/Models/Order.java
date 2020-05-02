@@ -8,16 +8,18 @@ public class Order {
     private String clintLocation;
     private String clintName;
     private String clintUID;
+    private String clintPhotoUri;
     private boolean accepted;
 
 
-    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID, boolean accepted) {
+    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID, String clintPhotoUri, boolean accepted) {
         this.dishName = dishName;
         this.dishQuantity = dishQuantity;
         this.dishPrize = dishPrize;
         this.clintLocation = clintLocation;
         this.clintName = clintName;
         this.clintUID = clintUID;
+        this.clintPhotoUri = clintPhotoUri;
         this.accepted = accepted;
     }
 
@@ -43,6 +45,10 @@ public class Order {
 
     public String getClintUID() {
         return clintUID;
+    }
+
+    public String getClintPhotoUri() {
+        return clintPhotoUri;
     }
     public boolean isAccepted()
     {
