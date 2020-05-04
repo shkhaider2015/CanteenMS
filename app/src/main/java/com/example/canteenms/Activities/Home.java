@@ -6,6 +6,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,10 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.canteenms.MainActivity;
+import com.example.canteenms.Fragments.Orders;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
-import com.example.canteenms.Utilities.Image;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -162,6 +164,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                 mAuth.signOut();
                 Home.this.finish();
                 break;
+            case R.id.menu_my_order:
+                //
+                loadFragment(new Orders());
+                break;
         }
         return true;
     }
@@ -260,5 +266,15 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                         }
                     }
                 });
+    }
+
+    private void loadFragment(Fragment fragment) {
+        // create a FragmentManager
+        FragmentManager fm = getSupportFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        // replace the FrameLayout with new Fragment
+        fragmentTransaction.replace(R.id.home_fragment_container, fragment);
+        fragmentTransaction.commit(); // save the changes
     }
 }
