@@ -10,9 +10,10 @@ public class Order {
     private String clintUID;
     private String clintPhotoUri;
     private boolean accepted;
+    private boolean isNotify;
 
 
-    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID, String clintPhotoUri, boolean accepted) {
+    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID, String clintPhotoUri, boolean accepted, boolean isNotify) {
         this.dishName = dishName;
         this.dishQuantity = dishQuantity;
         this.dishPrize = dishPrize;
@@ -21,6 +22,7 @@ public class Order {
         this.clintUID = clintUID;
         this.clintPhotoUri = clintPhotoUri;
         this.accepted = accepted;
+        this.isNotify = isNotify;
     }
 
     public String getDishName() {
@@ -50,8 +52,13 @@ public class Order {
     public String getClintPhotoUri() {
         return clintPhotoUri;
     }
+
     public boolean isAccepted()
     {
         return accepted;
+    }
+
+    public boolean isNotify() {
+        return isNotify;
     }
 }

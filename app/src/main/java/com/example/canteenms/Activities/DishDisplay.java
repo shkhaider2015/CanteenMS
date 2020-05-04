@@ -161,7 +161,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         }
 
         progress(1);
-        uploadData(new Order(dishName, quantity, dishPrize, location, clintName, clintUID, clintPhotouri, false));
+        uploadData(new Order(dishName, quantity, dishPrize, location, clintName, clintUID, clintPhotouri, false, false));
 
     }
 

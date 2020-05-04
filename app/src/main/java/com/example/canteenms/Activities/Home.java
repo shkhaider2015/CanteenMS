@@ -2,10 +2,15 @@ package com.example.canteenms.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,12 +24,19 @@ import com.example.canteenms.MainActivity;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Image;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, ValueEventListener {
 
     private static final String TAG = "Home";
 
@@ -43,6 +55,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         setContentView(R.layout.activity_home);
         init();
         headerUI();
+        getNotify();
+
+
     }
     private void init()
     {
@@ -169,5 +184,81 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
             mName.setText(mUser.getDisplayName());
             mEmail.setText(mUser.getEmail());
         }
+    }
+
+    private void getNotify()
+    {
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mRef = mDatabase.getReference().child("Orders").child(mUser.getUid());
+
+        mRef.addValueEventListener(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel =
+                    new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+    }
+
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+    {
+        for(DataSnapshot d1 : dataSnapshot.getChildren())
+        {
+
+            String dishName = String.valueOf(d1.child("dishName").getValue());
+            String orderId = String.valueOf(d1.getKey());
+            Boolean isAccepted = Boolean.valueOf(String.valueOf(d1.child("accepted").getValue()));
+            Boolean isNotify = Boolean.valueOf(String.valueOf(d1.child("isNotify").getValue()));
+
+            String msg = "Your " + dishName + " Order is accepted";
+            Log.d(TAG, "onDataChange: ACCEPTED : " + isAccepted);
+            Log.d(TAG, "onDataChange: dishName : " + dishName);
+            if (!isNotify && isAccepted)
+            {
+                Log.d(TAG, "onDataChange: CONDITION RUN");
+                notificationGeneratedValue(orderId);
+                showNotification(dishName, msg);
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+
+    public void showNotification(String title, String message)
+    {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, "MyNotification")
+                        .setContentTitle(title)
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setAutoCancel(true)
+                        .setContentText(message);
+        NotificationManagerCompat managerCompat =
+                NotificationManagerCompat.from(this);
+        managerCompat.notify(99, builder.build());
+
+    }
+
+    private void notificationGeneratedValue(String orderId)
+    {
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(mUser.getUid()).child(orderId).child("isNotify");
+        mRef.setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                        {
+                            Log.d(TAG, "onComplete: Notification Set successfully");
+                        }
+                    }
+                });
     }
 }
