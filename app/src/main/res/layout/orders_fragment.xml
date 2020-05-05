@@ -38,6 +38,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/order_line"
+        android:divider="@color/transparant_white"
+        android:dividerHeight="5dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,9 +11,19 @@ public class Order {
     private String clintPhotoUri;
     private boolean accepted;
     private boolean isNotify;
+    private boolean isCancelled;
+    private boolean isCompleted;
 
+    public Order()
+    {
 
-    public Order(String dishName, String dishQuantity, String dishPrize, String clintLocation, String clintName, String clintUID, String clintPhotoUri, boolean accepted, boolean isNotify) {
+    }
+
+    public Order(String dishName, String dishQuantity, String dishPrize,
+                 String clintLocation, String clintName, String clintUID,
+                 String clintPhotoUri, boolean accepted, boolean isNotify,
+                 boolean isCancelled, boolean isCompleted) {
+
         this.dishName = dishName;
         this.dishQuantity = dishQuantity;
         this.dishPrize = dishPrize;
@@ -23,6 +33,8 @@ public class Order {
         this.clintPhotoUri = clintPhotoUri;
         this.accepted = accepted;
         this.isNotify = isNotify;
+        this.isCancelled = isCancelled;
+        this.isCompleted = isCompleted;
     }
 
     public String getDishName() {
@@ -60,5 +72,13 @@ public class Order {
 
     public boolean isNotify() {
         return isNotify;
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
     }
 }

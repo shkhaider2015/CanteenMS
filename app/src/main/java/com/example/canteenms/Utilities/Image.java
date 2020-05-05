@@ -8,6 +8,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
+
+import com.example.canteenms.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.io.InputStream;
 
 public class Image {
 
+    private static final String TAG = "Image";
 
     public static String getPath(Context context, Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -130,5 +134,39 @@ public class Image {
             byteBuffer.write(buffer, 0, len);
         }
         return byteBuffer.toByteArray();
+    }
+
+    public static int getLocalImageId(String name)
+    {
+        String tempName = name.toLowerCase();
+        int image = 0;
+        switch (tempName)
+        {
+            case "samosa":
+                image = R.drawable.ic_samosa;
+                break;
+            case "cold drink":
+                image = R.drawable.ic_cold_drink;
+                break;
+            case "tea":
+                image = R.drawable.ic_mug;
+                break;
+            case "biryani":
+                image = R.drawable.ic_biryani;
+                break;
+            case "burger":
+                image = R.drawable.ic_burger;
+                break;
+            case "french fries":
+                image = R.drawable.ic_french_fries;
+                break;
+            case "salad":
+                image = R.drawable.ic_vegetable;
+                break;
+            case "omelette":
+                image = R.drawable.ic_omelette;
+                break;
+        }
+        return image;
     }
 }
