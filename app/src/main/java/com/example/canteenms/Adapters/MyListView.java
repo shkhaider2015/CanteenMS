@@ -8,15 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.canteenms.Models.MyOrder;
 import com.example.canteenms.Models.Order;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Image;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-public class MyListView extends BaseAdapter {
+public class MyListView extends BaseAdapter{
 
     private Context mCTX;
     private List<Order> mData;
@@ -50,7 +54,7 @@ public class MyListView extends BaseAdapter {
         ImageView imageView;
         TextView mDishName, mClintLocation, mAccepted;
         Button mComplete;
-        Order order = mData.get(position);
+        final Order order = mData.get(position);
 
         if (convertView == null)
             convertView = layoutInflater.inflate(R.layout.list_view_item, null);
@@ -101,9 +105,30 @@ public class MyListView extends BaseAdapter {
             }
         }
 
+        mComplete.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+
+                if (order.isAccepted())
+                {
+                    Toast.makeText(mCTX, "Complete button Clicked", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(mCTX, "Cancel button Clicked", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
 
         return convertView;
     }
+
+
+
 
 }
