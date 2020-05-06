@@ -48,8 +48,8 @@ public class MyListView extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ImageView imageView;
-        TextView mDishName, mClintLocation;
-        Button mAccepted, mComplete;
+        TextView mDishName, mClintLocation, mAccepted;
+        Button mComplete;
         Order order = mData.get(position);
 
         if (convertView == null)
@@ -59,7 +59,7 @@ public class MyListView extends BaseAdapter {
         imageView = convertView.findViewById(R.id.list_item_image);
         mDishName = convertView.findViewById(R.id.list_item_dish_name);
         mClintLocation = convertView.findViewById(R.id.list_item_dish_location);
-        mAccepted = convertView.findViewById(R.id.list_item_accept_button);
+        mAccepted = convertView.findViewById(R.id.list_item_accept_text);
         mComplete = convertView.findViewById(R.id.list_item_complete_button);
 
         // setting data
@@ -69,23 +69,36 @@ public class MyListView extends BaseAdapter {
 
         if (order.isAccepted())
         {
-            mAccepted.setEnabled(false);
+            mAccepted.setText(R.string.accept);
             if (order.isCompleted())
             {
+                mComplete.setText(R.string.completed);
+                mComplete.setBackgroundResource(R.drawable.bg_success);
                 mComplete.setEnabled(false);
             }
             else
             {
-                mComplete.setText("I Complete");
+                mComplete.setText(R.string.complete);
+                mComplete.setBackgroundResource(R.drawable.bg_success_not);
                 mComplete.setEnabled(true);
             }
         }
         else
         {
-            mAccepted.setEnabled(true);
-            mAccepted.setText("Pending");
-            mComplete.setText("I Cancel");
-            mComplete.setEnabled(true);
+            if (order.isCancelled())
+            {
+                mAccepted.setText(R.string.empty);
+                mComplete.setText(R.string.cancelled);
+                mComplete.setBackgroundResource(R.drawable.bg_danger);
+                mComplete.setEnabled(false);
+            }
+            else
+            {
+                mAccepted.setText(R.string.pending);
+                mComplete.setText(R.string.cancel);
+                mComplete.setBackgroundResource(R.drawable.bg_orange);
+                mComplete.setEnabled(true);
+            }
         }
 
 

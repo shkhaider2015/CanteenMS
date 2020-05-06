@@ -50,6 +50,11 @@
     <string name="my_order">My Order</string>
     <string name="orders">Orders</string>
     <string name="complete">Complete</string>
-    <string name="accept">Accept</string>
+    <string name="accept">Accepted</string>
+    <string name="cancel">Cancel</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="pending">Pending</string>
+    <string name="empty"> </string>
 
 </resources>
