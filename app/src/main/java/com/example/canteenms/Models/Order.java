@@ -11,9 +11,9 @@ public class Order {
     private String clintPhotoUri;
     private String orderTime;
     private boolean accepted;
-    private boolean isNotify;
-    private boolean isCancelled;
-    private boolean isCompleted;
+    private boolean notify;
+    private boolean cancelled;
+    private boolean completed;
 
     public Order()
     {
@@ -22,8 +22,8 @@ public class Order {
 
     public Order(String dishName, String dishQuantity, String dishPrize,
                  String clintLocation, String clintName, String clintUID,
-                 String clintPhotoUri, String orderTime, boolean accepted, boolean isNotify,
-                 boolean isCancelled, boolean isCompleted) {
+                 String clintPhotoUri, String orderTime, boolean accepted, boolean notify,
+                 boolean cancelled, boolean completed) {
 
         this.dishName = dishName;
         this.dishQuantity = dishQuantity;
@@ -34,9 +34,9 @@ public class Order {
         this.clintPhotoUri = clintPhotoUri;
         this.orderTime = orderTime;
         this.accepted = accepted;
-        this.isNotify = isNotify;
-        this.isCancelled = isCancelled;
-        this.isCompleted = isCompleted;
+        this.notify = notify;
+        this.cancelled = cancelled;
+        this.completed = completed;
     }
 
     public String getDishName() {
@@ -77,15 +77,15 @@ public class Order {
     }
 
     public boolean isNotify() {
-        return isNotify;
+        return notify;
     }
 
     public boolean isCancelled() {
-        return isCancelled;
+        return cancelled;
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     @Override
@@ -100,9 +100,9 @@ public class Order {
                 ", clintPhotoUri='" + clintPhotoUri + '\'' +
                 ", orderTime='" + orderTime + '\'' +
                 ", accepted=" + accepted +
-                ", isNotify=" + isNotify +
-                ", isCancelled=" + isCancelled +
-                ", isCompleted=" + isCompleted +
+                ", isNotify=" + notify +
+                ", isCancelled=" + cancelled +
+                ", isCompleted=" + completed +
                 '}';
     }
 }

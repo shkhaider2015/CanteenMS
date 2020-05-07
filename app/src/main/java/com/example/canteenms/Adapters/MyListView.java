@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.example.canteenms.Models.MyOrder;
 import com.example.canteenms.Models.Order;
@@ -103,6 +104,7 @@ public class MyListView extends BaseAdapter{
                 mAccepted.setText(R.string.empty);
                 mComplete.setText(R.string.cancelled);
                 mComplete.setBackgroundResource(R.drawable.bg_danger);
+                mComplete.setTextColor(ContextCompat.getColor(mCTX, R.color.white));
                 mComplete.setEnabled(false);
             }
             else
@@ -130,7 +132,7 @@ public class MyListView extends BaseAdapter{
                 if (order.isAccepted())
                 {
                     Toast.makeText(mCTX, "Complete button Clicked", Toast.LENGTH_SHORT).show();
-                    mRef.child("isCompleted")
+                    mRef.child("completed")
                             .setValue(true)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -158,7 +160,7 @@ public class MyListView extends BaseAdapter{
                 else
                 {
                     Toast.makeText(mCTX, "Cancel button Clicked", Toast.LENGTH_SHORT).show();
-                    mRef.child("isCancelled")
+                    mRef.child("cancelled")
                             .setValue(true)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
