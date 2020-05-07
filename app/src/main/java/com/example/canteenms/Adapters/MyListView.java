@@ -1,6 +1,7 @@
 package com.example.canteenms.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,27 +11,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.canteenms.Models.MyOrder;
 import com.example.canteenms.Models.Order;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Image;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class MyListView extends BaseAdapter{
 
     private Context mCTX;
     private List<Order> mData;
-    LayoutInflater layoutInflater;
 
     public MyListView(Context mCTX, List<Order> mData)
     {
         this.mCTX = mCTX;
         this.mData = mData;
-        layoutInflater = (LayoutInflater.from(mCTX));
     }
 
     @Override
@@ -57,7 +63,8 @@ public class MyListView extends BaseAdapter{
         final Order order = mData.get(position);
 
         if (convertView == null)
-            convertView = layoutInflater.inflate(R.layout.list_view_item, null);
+            convertView = LayoutInflater.from(mCTX).inflate(R.layout.list_view_item, null);
+//            convertView = layoutInflater.inflate(R.layout.list_view_item, null);
 
         // initialization
         imageView = convertView.findViewById(R.id.list_item_image);
@@ -70,6 +77,8 @@ public class MyListView extends BaseAdapter{
         imageView.setImageResource(Image.getLocalImageId(order.getDishName()));
         mDishName.setText(order.getDishName());
         mClintLocation.setText(order.getClintLocation());
+
+        Log.d(TAG, "getView: accepted : " + order.isAccepted() + " iscompleted : " + order.isCompleted() + " icCancelled : " + order.isCancelled());
 
         if (order.isAccepted())
         {
@@ -107,6 +116,12 @@ public class MyListView extends BaseAdapter{
 
         mComplete.setOnClickListener(new View.OnClickListener()
         {
+            DatabaseReference mRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference()
+                    .child("Orders")
+                    .child(order.getClintUID())
+                    .child(order.getOrderTime());
             @Override
             public void onClick(View v)
             {
@@ -115,10 +130,57 @@ public class MyListView extends BaseAdapter{
                 if (order.isAccepted())
                 {
                     Toast.makeText(mCTX, "Complete button Clicked", Toast.LENGTH_SHORT).show();
+                    mRef.child("isCompleted")
+                            .setValue(true)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
+                                    if (task.isSuccessful())
+                                    {
+                                        Log.d(TAG, "onComplete: Complete set to True");
+                                    }
+                                    else
+                                    {
+                                        Log.w(TAG, "onComplete: ERROR : " + task.getException() );
+                                    }
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+
                 }
                 else
                 {
                     Toast.makeText(mCTX, "Cancel button Clicked", Toast.LENGTH_SHORT).show();
+                    mRef.child("isCancelled")
+                            .setValue(true)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
+                                    if (task.isSuccessful())
+                                    {
+                                        Log.d(TAG, "onComplete: Cancelled set to True");
+                                    }
+                                    else
+                                    {
+                                        Log.w(TAG, "onComplete: ERROR : " + task.getException() );
+                                    }
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
                 }
 
             }
@@ -127,6 +189,7 @@ public class MyListView extends BaseAdapter{
 
         return convertView;
     }
+
 
 
 

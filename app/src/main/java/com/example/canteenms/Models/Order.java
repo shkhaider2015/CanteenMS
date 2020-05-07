@@ -9,6 +9,7 @@ public class Order {
     private String clintName;
     private String clintUID;
     private String clintPhotoUri;
+    private String orderTime;
     private boolean accepted;
     private boolean isNotify;
     private boolean isCancelled;
@@ -21,7 +22,7 @@ public class Order {
 
     public Order(String dishName, String dishQuantity, String dishPrize,
                  String clintLocation, String clintName, String clintUID,
-                 String clintPhotoUri, boolean accepted, boolean isNotify,
+                 String clintPhotoUri, String orderTime, boolean accepted, boolean isNotify,
                  boolean isCancelled, boolean isCompleted) {
 
         this.dishName = dishName;
@@ -31,6 +32,7 @@ public class Order {
         this.clintName = clintName;
         this.clintUID = clintUID;
         this.clintPhotoUri = clintPhotoUri;
+        this.orderTime = orderTime;
         this.accepted = accepted;
         this.isNotify = isNotify;
         this.isCancelled = isCancelled;
@@ -65,6 +67,10 @@ public class Order {
         return clintPhotoUri;
     }
 
+    public String getOrderTime() {
+        return orderTime;
+    }
+
     public boolean isAccepted()
     {
         return accepted;
@@ -80,5 +86,23 @@ public class Order {
 
     public boolean isCompleted() {
         return isCompleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "dishName='" + dishName + '\'' +
+                ", dishQuantity='" + dishQuantity + '\'' +
+                ", dishPrize='" + dishPrize + '\'' +
+                ", clintLocation='" + clintLocation + '\'' +
+                ", clintName='" + clintName + '\'' +
+                ", clintUID='" + clintUID + '\'' +
+                ", clintPhotoUri='" + clintPhotoUri + '\'' +
+                ", orderTime='" + orderTime + '\'' +
+                ", accepted=" + accepted +
+                ", isNotify=" + isNotify +
+                ", isCancelled=" + isCancelled +
+                ", isCompleted=" + isCompleted +
+                '}';
     }
 }

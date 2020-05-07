@@ -34,7 +34,7 @@ public class Orders extends Fragment implements ValueEventListener
 
     private ListView mListView;
     private List<Order> mData;
-    FirebaseUser mUser;
+    private FirebaseUser mUser;
 
     public Orders()
     {
@@ -75,15 +75,8 @@ public class Orders extends Fragment implements ValueEventListener
         mData = new ArrayList<>();
         for (DataSnapshot d1 : dataSnapshot.getChildren())
         {
-            String dishName = String.valueOf(d1.child("dishName").getValue());
-            String clintLocation = String.valueOf(d1.child("clintLocation").getValue());
-            String dishQuantity = String.valueOf(d1.child("dishQuantity").getValue());
-            boolean isAccepted = Boolean.parseBoolean(String.valueOf(d1.child("accepted").getValue()));
-            int imageId = Image.getLocalImageId(dishName);
-
             Order order = d1.getValue(Order.class);
-            assert order != null;
-            Log.d(TAG, "onDataChange: Order checking --------------- : " + order.getClintName());
+            Log.d(TAG, "onDataChange: " + order.toString());
             mData.add(order);
         }
 
@@ -99,5 +92,10 @@ public class Orders extends Fragment implements ValueEventListener
     {
         MyListView listAdapter = new MyListView(getActivity(), mData);
         mListView.setAdapter(listAdapter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

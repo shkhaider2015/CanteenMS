@@ -131,7 +131,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
 
     private void sendOrder()
     {
-        String quantity, location, dishName, dishPrize, clintName, clintUID, clintPhotouri;
+        String quantity, location, dishName, dishPrize, clintName, clintUID, clintPhotouri, orderTime;
         quantity = mQuantity.getText().toString();
         location = mLocation.getText().toString();
         dishName = mDishName.getText().toString();
@@ -139,6 +139,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         clintName = mUser.getDisplayName();
         clintUID = mUser.getUid();
         clintPhotouri = Objects.requireNonNull(mUser.getPhotoUrl()).toString();
+        orderTime = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
 
         if (quantity.isEmpty())
@@ -161,8 +162,9 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         }
 
         progress(1);
+
         uploadData(new Order(dishName, quantity, dishPrize, location,
-                clintName, clintUID, clintPhotouri, false,
+                clintName, clintUID, clintPhotouri, orderTime, false,
                 false, false, false));
 
     }
@@ -174,7 +176,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
                 .getReference()
                 .child("Orders")
                 .child(mUser.getUid())
-                .child(Calendar.getInstance().getTimeInMillis() + "");
+                .child(order.getOrderTime());
 
         mRef.setValue(order)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

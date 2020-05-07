@@ -64,7 +64,7 @@
         android:text="@string/complete"
         android:textColor="@color/black"
         android:textAllCaps="true"
-        android:background="@color/green_gray"
+        android:background="@drawable/bg_success"
         />
 
 
