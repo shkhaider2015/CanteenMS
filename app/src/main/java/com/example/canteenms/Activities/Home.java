@@ -27,6 +27,7 @@ import com.example.canteenms.Fragments.Orders;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -195,7 +196,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     private void getNotify()
     {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("Orders").child(mUser.getUid());
+        DatabaseReference mRef = mDatabase.getReference().child("Users").child(mUser.getUid()).child("Orders");
 
         mRef.addValueEventListener(this);
 
@@ -218,11 +219,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
             String dishName = String.valueOf(d1.child("dishName").getValue());
             String orderId = String.valueOf(d1.getKey());
             Boolean isAccepted = Boolean.valueOf(String.valueOf(d1.child("accepted").getValue()));
-            Boolean isNotify = Boolean.valueOf(String.valueOf(d1.child("isNotify").getValue()));
+            Boolean isNotify = Boolean.valueOf(String.valueOf(d1.child("notify").getValue()));
 
             String msg = "Your " + dishName + " Order is accepted";
             Log.d(TAG, "onDataChange: ACCEPTED : " + isAccepted);
             Log.d(TAG, "onDataChange: dishName : " + dishName);
+            Log.d(TAG, "onDataChange: isNotifi");
             if (!isNotify && isAccepted)
             {
                 Log.d(TAG, "onDataChange: CONDITION RUN");
@@ -255,14 +257,44 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
 
     private void notificationGeneratedValue(String orderId)
     {
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(mUser.getUid()).child(orderId).child("isNotify");
+        final String finalOrderId = orderId;
+        DatabaseReference mRef = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Users")
+                .child(mUser.getUid())
+                .child("Orders")
+                .child(orderId)
+                .child("notify");
         mRef.setValue(true)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    DatabaseReference mref = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("Orders")
+                            .child(finalOrderId)
+                            .child("notify");
+
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
                         {
                             Log.d(TAG, "onComplete: Notification Set successfully");
+                            mref.setValue(true)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task)
+                                        {
+                                            Log.d(TAG, "onComplete: Both Side Update success");
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d(TAG, "onFailure: One place update success but at another place failure");
+                                        }
+                                    });
                         }
                     }
                 });

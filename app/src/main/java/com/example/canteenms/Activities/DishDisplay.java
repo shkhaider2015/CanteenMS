@@ -134,7 +134,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         String quantity, location, dishName, dishPrize, clintName, clintUID, clintPhotouri, orderTime;
         quantity = mQuantity.getText().toString();
         location = mLocation.getText().toString();
-        dishName = mDishName.getText().toString();
+        dishName = mDishName.getText().toString().replace(" ", "_").toLowerCase();
         dishPrize = mDishPrize.getText().toString();
         clintName = mUser.getDisplayName();
         clintUID = mUser.getUid();
@@ -169,25 +169,57 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
 
     }
 
-    private void uploadData(Order order)
+    private void uploadData(final Order order)
     {
-        DatabaseReference mRef = FirebaseDatabase
+        DatabaseReference userRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
-                .child("Orders")
+                .child("Users")
                 .child(mUser.getUid())
+                .child("Orders")
                 .child(order.getOrderTime());
+        final DatabaseReference genralRef = FirebaseDatabase
+            .getInstance()
+            .getReference()
+            .child("Orders")
+            .child(order.getOrderTime());
 
-        mRef.setValue(order)
+
+        userRef.setValue(order)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task)
                     {
                         if (task.isSuccessful())
                         {
-                            Toast.makeText(getApplicationContext(), "Your Order has sent", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(DishDisplay.this, Home.class));
-                            DishDisplay.this.finish();
+
+                            genralRef.setValue(order)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task)
+                                        {
+                                            if (task.isSuccessful())
+                                            {
+                                                Log.d(TAG, "onComplete: Upload Both Side Successfully");
+                                                Toast.makeText(getApplicationContext(), "Your Order has sent", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(DishDisplay.this, Home.class));
+                                                DishDisplay.this.finish();
+                                            }
+                                            else
+                                            {
+                                                Log.w(TAG, "onComplete: ERROR : ", task.getException());
+                                            }
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e)
+                                        {
+                                            progress(0);
+
+                                        }
+                                    });
                         }
                         else
                         {
@@ -202,6 +234,8 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
                         progress(0);
                     }
                 });
+
+
 
 
     }

@@ -63,8 +63,9 @@ public class Orders extends Fragment implements ValueEventListener
         DatabaseReference mRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
-                .child("Orders")
-                .child(mUser.getUid());
+                .child("Users")
+                .child(mUser.getUid())
+                .child("Orders");
         mRef.addValueEventListener(this);
 
     }

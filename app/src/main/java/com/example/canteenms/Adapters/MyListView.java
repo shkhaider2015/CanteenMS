@@ -20,6 +20,7 @@ import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Image;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -118,71 +119,18 @@ public class MyListView extends BaseAdapter{
 
         mComplete.setOnClickListener(new View.OnClickListener()
         {
-            DatabaseReference mRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference()
-                    .child("Orders")
-                    .child(order.getClintUID())
-                    .child(order.getOrderTime());
             @Override
             public void onClick(View v)
             {
-
-
                 if (order.isAccepted())
                 {
                     Toast.makeText(mCTX, "Complete button Clicked", Toast.LENGTH_SHORT).show();
-                    mRef.child("completed")
-                            .setValue(true)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if (task.isSuccessful())
-                                    {
-                                        Log.d(TAG, "onComplete: Complete set to True");
-                                    }
-                                    else
-                                    {
-                                        Log.w(TAG, "onComplete: ERROR : " + task.getException() );
-                                    }
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
-                            });
-
+                    updateValues(order.getOrderTime(), order.getClintUID(), true);
                 }
                 else
                 {
                     Toast.makeText(mCTX, "Cancel button Clicked", Toast.LENGTH_SHORT).show();
-                    mRef.child("cancelled")
-                            .setValue(true)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if (task.isSuccessful())
-                                    {
-                                        Log.d(TAG, "onComplete: Cancelled set to True");
-                                    }
-                                    else
-                                    {
-                                        Log.w(TAG, "onComplete: ERROR : " + task.getException() );
-                                    }
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
-                            });
+                    updateValues(order.getOrderTime(), order.getClintUID(), false);
                 }
 
             }
@@ -193,6 +141,79 @@ public class MyListView extends BaseAdapter{
     }
 
 
+    private void updateValues(final String orderTime, final String clintUID, boolean condition)
+    {
+        DatabaseReference refOne = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child("Orders")
+                .child(orderTime);
+
+        if (condition)
+        {
+            refOne.child("completed").setValue(true)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        DatabaseReference refTwo = FirebaseDatabase
+                                .getInstance()
+                                .getReference()
+                                .child("Users")
+                                .child(clintUID)
+                                .child("Orders")
+                                .child(orderTime);
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            refTwo.child("completed").setValue(true)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "onSuccess: BOTH TASK SUCCESS AT ORDER List");
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+        }
+        else
+        {
+            refOne.child("cancelled").setValue(true)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        DatabaseReference refTwo = FirebaseDatabase
+                                .getInstance()
+                                .getReference()
+                                .child(clintUID)
+                                .child("Orders")
+                                .child(orderTime);
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            refTwo.child("cancelled").setValue(true)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "onSuccess: BOTH TASK SUCCESS AT ORDER List");
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+        }
+
+    }
 
 
 
