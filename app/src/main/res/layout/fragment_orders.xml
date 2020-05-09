@@ -39,7 +39,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/order_line"
         android:divider="@color/transparant_white"
-        android:dividerHeight="5dp"
+        android:dividerHeight="7dp"
+        android:layout_marginTop="30dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

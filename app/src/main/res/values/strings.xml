@@ -56,5 +56,9 @@
     <string name="cancelled">Cancelled</string>
     <string name="pending">Pending</string>
     <string name="empty"> </string>
+    <string name="order_completed">Order Completed</string>
+    <string name="order_cancelled">Order Cancelled</string>
+    <string name="total_orders">Total Orders</string>
+    <string name="my_profile">My Profile</string>
 
 </resources>

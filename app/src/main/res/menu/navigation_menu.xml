@@ -18,6 +18,7 @@
         <item
             android:id="@+id/menu_my_order"
             android:title="@string/my_order"
+            android:icon="@drawable/ic_orders"
             />
     </group>
 
@@ -29,7 +30,7 @@
         <item
             android:id="@+id/menu_logout"
             android:title="@string/logout"
-            android:icon="@drawable/ic_logout"
+            android:icon="@drawable/ic_signout"
             />
     </group>
 

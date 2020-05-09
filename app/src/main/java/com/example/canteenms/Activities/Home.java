@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.canteenms.Fragments.Orders;
+import com.example.canteenms.Fragments.Profile;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -153,11 +154,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         {
             case R.id.menu_profile:
                 //
-                Toast.makeText(Home.this, "Profile", Toast.LENGTH_SHORT).show();
+                loadFragment(new Profile());
+                drawerLayout.closeDrawer(GravityCompat.START, true);
                 break;
             case R.id.menu_settings:
                 //
                 Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
+                drawerLayout.closeDrawer(GravityCompat.START, true);
                 break;
             case R.id.menu_logout:
                 //
@@ -168,6 +171,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
             case R.id.menu_my_order:
                 //
                 loadFragment(new Orders());
+                drawerLayout.closeDrawer(GravityCompat.START, true);
                 break;
         }
         return true;

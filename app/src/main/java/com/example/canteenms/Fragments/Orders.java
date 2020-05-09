@@ -10,13 +10,10 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.canteenms.Adapters.MyListView;
-import com.example.canteenms.Models.MyOrder;
 import com.example.canteenms.Models.Order;
 import com.example.canteenms.R;
-import com.example.canteenms.Utilities.Image;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +42,7 @@ public class Orders extends Fragment implements ValueEventListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.orders_fragment, container, false);
+        View view =  inflater.inflate(R.layout.fragment_orders, container, false);
         init(view);
         return view;
     }
