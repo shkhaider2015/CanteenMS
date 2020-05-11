@@ -60,5 +60,7 @@
     <string name="order_cancelled">Order Cancelled</string>
     <string name="total_orders">Total Orders</string>
     <string name="my_profile">My Profile</string>
+    <string name="send">SEND</string>
+    <string name="enter_message">Enter message</string>
 
 </resources>
