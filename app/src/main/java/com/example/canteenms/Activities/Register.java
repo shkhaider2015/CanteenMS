@@ -409,18 +409,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     private void uploadInfotoDatabase(Uri uri)
     {
-        String name, email, image;
+        String name, email, image, uid;
         name = mFullName.getText().toString();
         email = mEmail.getText().toString();
         image = uri.toString();
+        uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-        RegisterModel registerModel = new RegisterModel(image, name, email);
+        RegisterModel registerModel = new RegisterModel(image, name, email, uid);
 
         DatabaseReference mref = FirebaseDatabase
                 .getInstance()
                 .getReference();
         mref.child("Users")
-                .child(mAuth.getCurrentUser().getUid())
+                .child(uid)
                 .child("Profile")
                 .setValue(registerModel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
