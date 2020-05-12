@@ -1,6 +1,7 @@
 package com.example.canteenms.Adapters;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.canteenms.Models.Message;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Calculation;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -24,21 +27,53 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     private Context mCTX;
     private List<Message> dataModel;
+    private FirebaseUser mUser;
 
     public ChatAdapter(Context mCTX, List<Message> dataModel) {
         this.mCTX = mCTX;
         this.dataModel = dataModel;
+        mUser = FirebaseAuth
+                .getInstance()
+                .getCurrentUser();
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        View view;
+
+        if (viewType == VIEW_TYPE_MESSAGE_SENT)
+        {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_message_sent, parent, false);
+            return new SenderMessageHolder(view);
+        }
+        else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED)
+        {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_message_recieved, parent, false);
+            return new ReceiverMessageHolder(view);
+        }
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
+    {
+        Message message = dataModel.get(position);
 
+        switch (holder.getItemViewType())
+        {
+            case VIEW_TYPE_MESSAGE_SENT:
+                //
+                ((SenderMessageHolder) holder).bind(message);
+                break;
+            case VIEW_TYPE_MESSAGE_RECEIVED:
+                //
+                ((ReceiverMessageHolder) holder).bind(message);
+                break;
+        }
     }
 
     @Override
@@ -48,7 +83,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        Message message = dataModel.get(position);
+
+        if (mUser.getUid().equals(message.getSenderId()))
+            return VIEW_TYPE_MESSAGE_SENT;
+        else
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+
     }
 
     private class SenderMessageHolder extends RecyclerView.ViewHolder
@@ -93,7 +134,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         void bind(Message message)
         {
+            Picasso
+                    .get()
+                    .load(message.getSenderProfileURI())
+                    .placeholder(R.drawable.ic_profile_80_80)
+                    .into(mImage);
 
+            mName.setText(message.getSenderName());
+            mMessage.setText(message.getMsg());
+            mTime.setText(Calculation.getDate(Integer.parseInt(message.getMsgTime()), "dd/MM/yyyy hh:mm:ss.SSS"));
         }
     }
 }
