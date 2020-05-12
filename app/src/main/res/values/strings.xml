@@ -62,5 +62,6 @@
     <string name="my_profile">My Profile</string>
     <string name="send">SEND</string>
     <string name="enter_message">Enter message</string>
+    <string name="chat_room">Chat Room</string>
 
 </resources>

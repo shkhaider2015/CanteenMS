@@ -160,6 +160,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
             case R.id.menu_settings:
                 //
                 Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Home.this, Chat.class));
                 drawerLayout.closeDrawer(GravityCompat.START, true);
                 break;
             case R.id.menu_logout:
@@ -170,8 +171,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                 break;
             case R.id.menu_my_order:
                 //
-                loadFragment(new Orders());
                 drawerLayout.closeDrawer(GravityCompat.START, true);
+                loadFragment(new Orders());
                 break;
         }
         return true;

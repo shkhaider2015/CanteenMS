@@ -29,12 +29,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private List<Message> dataModel;
     private FirebaseUser mUser;
 
-    public ChatAdapter(Context mCTX, List<Message> dataModel) {
+    public ChatAdapter(Context mCTX, List<Message> dataModel, FirebaseUser mUser)
+    {
         this.mCTX = mCTX;
         this.dataModel = dataModel;
-        mUser = FirebaseAuth
-                .getInstance()
-                .getCurrentUser();
+        this.mUser = mUser;
     }
 
     @NonNull
@@ -77,12 +76,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataModel.size();
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position)
+    {
         Message message = dataModel.get(position);
 
         if (mUser.getUid().equals(message.getSenderId()))
@@ -109,8 +110,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         void bind(Message message)
         {
+            long time = Long.parseLong(message.getMsgTime());
             mMessage.setText(message.getMsg());
-            mTime.setText(Calculation.getDate(Integer.parseInt(message.getMsgTime()), "dd/MM/yyyy hh:mm:ss.SSS"));
+            mTime.setText(Calculation.getDate(time, "dd/MM/yyyy hh:mm:ss.SSS"));
         }
     }
 

@@ -4,6 +4,11 @@ public class Message {
 
     private String senderId, senderName, senderEmail, senderProfileURI,  msgTime, msg;
 
+    public Message()
+    {
+
+    }
+
     public Message(String senderId, String senderName, String senderEmail, String senderProfileURI, String msgTime, String msg) {
         this.senderId = senderId;
         this.senderName = senderName;

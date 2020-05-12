@@ -2,6 +2,7 @@ package com.example.canteenms.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -81,6 +82,7 @@ public class Chat extends AppCompatActivity implements ValueEventListener, View.
         {
             Message message = d.getValue(Message.class);
             dataModel.add(message);
+            Log.d(TAG, "onDataChange: MESSAGE : " + message.getMsg());
         }
         updateUI();
     }
@@ -115,7 +117,7 @@ public class Chat extends AppCompatActivity implements ValueEventListener, View.
                     {
                         if (task.isSuccessful())
                         {
-                            updateUI();
+
                         }
                         else
                         {
@@ -136,7 +138,11 @@ public class Chat extends AppCompatActivity implements ValueEventListener, View.
 
     private void updateUI()
     {
-        mAdapter = new ChatAdapter(getApplicationContext(), dataModel);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Chat.this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mAdapter = new ChatAdapter(getApplicationContext(), dataModel, mUser);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 }
