@@ -110,7 +110,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         void bind(Message message)
         {
-            long time = Long.parseLong(message.getMsgTime());
+            long time = message.getMsgTime();
             mMessage.setText(message.getMsg());
             mTime.setText(Calculation.getDate(time, "dd/MM/yyyy hh:mm:ss.SSS"));
         }
@@ -144,7 +144,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
             mName.setText(message.getSenderName());
             mMessage.setText(message.getMsg());
-            mTime.setText(Calculation.getDate(Integer.parseInt(message.getMsgTime()), "dd/MM/yyyy hh:mm:ss.SSS"));
+            mTime.setText(Calculation.getDate(message.getMsgTime(), "dd/MM/yyyy hh:mm:ss.SSS"));
         }
     }
 }

@@ -2,14 +2,15 @@ package com.example.canteenms.Models;
 
 public class Message {
 
-    private String senderId, senderName, senderEmail, senderProfileURI,  msgTime, msg;
+    private String senderId, senderName, senderEmail, senderProfileURI, msg;
+    private long msgTime;
 
     public Message()
     {
 
     }
 
-    public Message(String senderId, String senderName, String senderEmail, String senderProfileURI, String msgTime, String msg) {
+    public Message(String senderId, String senderName, String senderEmail, String senderProfileURI, long msgTime, String msg) {
         this.senderId = senderId;
         this.senderName = senderName;
         this.senderEmail = senderEmail;
@@ -34,7 +35,7 @@ public class Message {
         return senderProfileURI;
     }
 
-    public String getMsgTime() {
+    public long getMsgTime() {
         return msgTime;
     }
 

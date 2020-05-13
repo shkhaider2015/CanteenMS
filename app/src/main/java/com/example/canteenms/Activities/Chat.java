@@ -16,6 +16,7 @@ import com.example.canteenms.Models.Message;
 import com.example.canteenms.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -97,7 +98,8 @@ public class Chat extends AppCompatActivity implements ValueEventListener, View.
     public void onClick(View v)
     {
         String msg = mChatText.getText().toString();
-        String time = String.valueOf(Calendar.getInstance().getTimeInMillis());
+        long time = Calendar.getInstance().getTimeInMillis();
+        final String timekwy = String.valueOf(time);
 
         if (v.getId() != R.id.chat_button_chatbox_send)
             return;
@@ -108,15 +110,33 @@ public class Chat extends AppCompatActivity implements ValueEventListener, View.
             return;
         }
 
-        Message message = new Message(mUser.getUid(), mUser.getDisplayName(), mUser.getEmail(), mUser.getPhotoUrl().toString(), time, msg);
+        final Message message = new Message(mUser.getUid(), mUser.getDisplayName(), mUser.getEmail(), mUser.getPhotoUrl().toString(), time, msg);
 
-        mRef.child(time).setValue(message)
+        mRef.child(timekwy).setValue(message)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task)
                     {
                         if (task.isSuccessful())
                         {
+                            DatabaseReference reference = FirebaseDatabase
+                                    .getInstance()
+                                    .getReference()
+                                    .child("Chat")
+                                    .child(timekwy);
+                            reference.setValue(message)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "onSuccess: Chat Activity Both Side Success");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d(TAG, "onFailure:  Chat Activity One side failure");
+                                        }
+                                    });
 
                         }
                         else
