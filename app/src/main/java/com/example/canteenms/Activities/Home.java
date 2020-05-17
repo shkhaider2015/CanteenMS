@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.canteenms.Fragments.Chat;
 import com.example.canteenms.Fragments.Orders;
 import com.example.canteenms.Fragments.Profile;
 import com.example.canteenms.Models.Dish;
@@ -157,10 +158,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                 loadFragment(new Profile());
                 drawerLayout.closeDrawer(GravityCompat.START, true);
                 break;
-            case R.id.menu_settings:
+            case R.id.menu_chat:
                 //
-                Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Home.this, Chat.class));
+                loadFragment(new Chat());
                 drawerLayout.closeDrawer(GravityCompat.START, true);
                 break;
             case R.id.menu_logout:
