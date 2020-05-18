@@ -44,7 +44,7 @@
         android:layout_marginTop="100dp"
         />
 
-    <!-- A horizontal line between the chatbox and RecyclerView -->
+    <!-- A horizontal line between the chat box and RecyclerView -->
     <View
         android:id="@+id/chat_view_line"
         android:layout_width="0dp"
