@@ -18,15 +18,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.canteenms.Adapters.GridAdapter;
 import com.example.canteenms.Fragments.Chat;
 import com.example.canteenms.Fragments.Orders;
 import com.example.canteenms.Fragments.Profile;
 import com.example.canteenms.Models.Dish;
+import com.example.canteenms.Models.Food;
 import com.example.canteenms.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,17 +44,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, ValueEventListener {
 
     private static final String TAG = "Home";
 
-    private LinearLayout mTea, mBiryani, mBurger, mSamosa, mFrenchFries, mSalad, mOmlette, mColdDrink;
     private ImageView mHamburger;
     DrawerLayout drawerLayout;
     NavigationView mNavigationView;
+    private GridView mGridView;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private List<Food> mDataList;
 
 
     @Override
@@ -66,26 +73,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     }
     private void init()
     {
-       mTea = findViewById(R.id.home_tea);
-       mBiryani = findViewById(R.id.home_biryani);
-       mBurger = findViewById(R.id.home_burger);
-       mSamosa = findViewById(R.id.home_samosa);
-       mFrenchFries = findViewById(R.id.home_french_fries);
-       mSalad = findViewById(R.id.home_salad);
-       mOmlette = findViewById(R.id.home_omelette);
-       mColdDrink = findViewById(R.id.home_cold_drink);
+
        mHamburger = findViewById(R.id.home_hamburger);
        drawerLayout = findViewById(R.id.home_drawer);
        mNavigationView = findViewById(R.id.navigation);
+       mGridView = findViewById(R.id.home_grid_layout);
 
-       mTea.setOnClickListener(this);
-       mBiryani.setOnClickListener(this);
-       mBurger.setOnClickListener(this);
-       mSalad.setOnClickListener(this);
-       mSamosa.setOnClickListener(this);
-       mFrenchFries.setOnClickListener(this);
-       mOmlette.setOnClickListener(this);
-       mColdDrink.setOnClickListener(this);
        mHamburger.setOnClickListener(this);
        mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -93,51 +86,18 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mAuth = FirebaseAuth.getInstance();
        mUser = mAuth.getCurrentUser();
 
+        DatabaseReference mRef = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child("Foods");
+        mRef.addValueEventListener(this);
+
     }
 
     @Override
     public void onClick(View v)
     {
 
-        switch (v.getId())
-        {
-            case R.id.home_tea:
-                //
-                nextActivity(new Dish("Tea", 25, R.drawable.ic_mug));
-                break;
-            case R.id.home_biryani:
-                //
-                nextActivity(new Dish("Biryani", 100, R.drawable.ic_biryani));
-                break;
-            case R.id.home_burger:
-                //
-                nextActivity(new Dish("Burger", 50, R.drawable.ic_burger));
-                break;
-            case R.id.home_samosa:
-                //
-                nextActivity(new Dish("Samosa", 12, R.drawable.ic_samosa));
-                break;
-            case R.id.home_salad:
-                //
-                nextActivity(new Dish("Salad", 20, R.drawable.ic_vegetable));
-                break;
-            case R.id.home_french_fries:
-                //
-                nextActivity(new Dish("French Fries", 30, R.drawable.ic_french_fries));
-                break;
-            case R.id.home_omelette:
-                //
-                nextActivity(new Dish("Omelette", 30, R.drawable.ic_omelette));
-                break;
-            case R.id.home_cold_drink:
-                //
-                nextActivity(new Dish("Cold Drink", 40, R.drawable.ic_cold_drink));
-                break;
-            case R.id.home_hamburger:
-                //
-                drawerLayout.openDrawer(GravityCompat.START);
-                break;
-        }
 
     }
 
@@ -203,7 +163,37 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = mDatabase.getReference().child("Users").child(mUser.getUid()).child("Orders");
 
-        mRef.addValueEventListener(this);
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot d1 : dataSnapshot.getChildren())
+                {
+
+                    String dishName = String.valueOf(d1.child("dishName").getValue());
+                    String orderId = String.valueOf(d1.getKey());
+                    Boolean isAccepted = Boolean.valueOf(String.valueOf(d1.child("accepted").getValue()));
+                    Boolean isNotify = Boolean.valueOf(String.valueOf(d1.child("notify").getValue()));
+
+                    String msg = "Your " + dishName + " Order is accepted";
+                    Log.d(TAG, "onDataChange: ACCEPTED : " + isAccepted);
+                    Log.d(TAG, "onDataChange: dishName : " + dishName);
+                    Log.d(TAG, "onDataChange: isNotifi");
+                    if (!isNotify && isAccepted)
+                    {
+                        Log.d(TAG, "onDataChange: CONDITION RUN");
+                        notificationGeneratedValue(orderId);
+                        showNotification(dishName, msg);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -218,27 +208,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot)
     {
-        for(DataSnapshot d1 : dataSnapshot.getChildren())
+        mDataList = new ArrayList<>();
+        for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-
-            String dishName = String.valueOf(d1.child("dishName").getValue());
-            String orderId = String.valueOf(d1.getKey());
-            Boolean isAccepted = Boolean.valueOf(String.valueOf(d1.child("accepted").getValue()));
-            Boolean isNotify = Boolean.valueOf(String.valueOf(d1.child("notify").getValue()));
-
-            String msg = "Your " + dishName + " Order is accepted";
-            Log.d(TAG, "onDataChange: ACCEPTED : " + isAccepted);
-            Log.d(TAG, "onDataChange: dishName : " + dishName);
-            Log.d(TAG, "onDataChange: isNotifi");
-            if (!isNotify && isAccepted)
-            {
-                Log.d(TAG, "onDataChange: CONDITION RUN");
-                notificationGeneratedValue(orderId);
-                showNotification(dishName, msg);
-
-            }
-
+            Food food = ds.getValue(Food.class);
+            mDataList.add(food);
         }
+        updateGrid();
     }
 
     @Override
@@ -303,6 +279,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
                         }
                     }
                 });
+    }
+
+    private void updateGrid()
+    {
+        GridAdapter adapter = new GridAdapter(mDataList, getApplicationContext());
+        mGridView.setAdapter(adapter);
+
     }
 
     private void loadFragment(Fragment fragment) {
