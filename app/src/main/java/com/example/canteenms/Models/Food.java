@@ -2,7 +2,7 @@ package com.example.canteenms.Models;
 
 import java.io.Serializable;
 
-public class Food {
+public class Food implements Serializable {
 
     String foodName, foodPrice, foodImageUri;
 

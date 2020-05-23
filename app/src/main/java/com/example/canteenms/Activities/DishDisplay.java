@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.canteenms.Models.Dish;
+import com.example.canteenms.Models.Food;
 import com.example.canteenms.Models.Order;
 import com.example.canteenms.R;
 import com.example.canteenms.Utilities.Calculation;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -41,7 +43,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
     private Button mOrder;
     private ProgressBar mProgress;
 
-    private Dish dish;
+    private Food food;
     private boolean quantityAlert;
 
     FirebaseAuth mAuth;
@@ -79,12 +81,16 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
     private void loadLocalData()
     {
         // Seriallaize object
-        dish =(Dish) getIntent().getSerializableExtra("Object");
+        food =(Food) getIntent().getSerializableExtra("Object");
 
-        assert dish != null;
-        mDishImage.setImageResource(dish.getImage());
-        mDishName.setText(dish.getDishName());
-        String prize = "Rs : " + dish.getDishPrize();
+        assert food != null;
+        Picasso
+                .get()
+                .load(food.getFoodImageUri())
+                .placeholder(R.drawable.ic_profile_80_80)
+                .into(mDishImage);
+        mDishName.setText(food.getFoodName());
+        String prize = "Rs : " + food.getFoodPrice();
         mDishPrize.setText(prize);
     }
 
@@ -114,7 +120,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         if (!input.isEmpty())
         {
             Integer quan = Integer.parseInt(s.toString());
-            Integer prize = dish.getDishPrize();
+            Integer prize = Integer.parseInt(food.getFoodPrice());
             int total = quan * prize;
             String display = "Rs : " + total;
             mDishPrize.setText(display);

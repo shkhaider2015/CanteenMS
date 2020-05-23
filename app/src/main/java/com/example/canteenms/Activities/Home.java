@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +48,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, ValueEventListener {
+public class Home extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, ValueEventListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "Home";
 
@@ -97,14 +98,19 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     @Override
     public void onClick(View v)
     {
-
+        switch (v.getId())
+        {
+            case R.id.home_hamburger:
+                drawerLayout.openDrawer(GravityCompat.START, true);
+                break;
+        }
 
     }
 
-    private void nextActivity(Dish dishobject)
+    private void nextActivity(Food food)
     {
         Intent intent = new Intent(Home.this, DishDisplay.class);
-        intent.putExtra("Object", dishobject);
+        intent.putExtra("Object", food);
         startActivity(intent);
     }
 
@@ -285,6 +291,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     {
         GridAdapter adapter = new GridAdapter(mDataList, getApplicationContext());
         mGridView.setAdapter(adapter);
+        mGridView.setOnItemClickListener(this);
 
     }
 
@@ -296,5 +303,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.home_fragment_container, fragment);
         fragmentTransaction.commit(); // save the changes
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Food food = mDataList.get(position);
+        nextActivity(food);
+
     }
 }
