@@ -4,15 +4,17 @@ import java.io.Serializable;
 
 public class Food implements Serializable {
 
-    String foodName, foodPrice, foodImageUri;
+    private String foodName, foodPrice, foodImageUri;
+    private boolean availability;
 
     public Food() {
     }
 
-    public Food(String foodName, String foodPrice, String foodImageUri) {
+    public Food(String foodName, String foodPrice, String foodImageUri, boolean availability) {
         this.foodName = foodName;
         this.foodPrice = foodPrice;
         this.foodImageUri = foodImageUri;
+        this.availability = availability;
     }
 
     public String getFoodName() {
@@ -25,5 +27,9 @@ public class Food implements Serializable {
 
     public String getFoodImageUri() {
         return foodImageUri;
+    }
+
+    public boolean isAvailability() {
+        return availability;
     }
 }
