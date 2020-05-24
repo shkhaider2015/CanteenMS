@@ -137,11 +137,13 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
 
     private void sendOrder()
     {
-        String quantity, location, dishName, dishPrize, clintName, clintUID, clintPhotouri, orderTime;
+        String quantity, location, dishName, dishPrize, totalDishPrize, dishImageUri, clintName, clintUID, clintPhotouri, orderTime;
         quantity = mQuantity.getText().toString();
         location = mLocation.getText().toString();
-        dishName = mDishName.getText().toString().replace(" ", "_").toLowerCase();
-        dishPrize = mDishPrize.getText().toString();
+        dishName = food.getFoodName();
+        dishPrize = food.getFoodPrice();
+        totalDishPrize = mDishPrize.getText().toString();
+        dishImageUri = food.getFoodImageUri();
         clintName = mUser.getDisplayName();
         clintUID = mUser.getUid();
         clintPhotouri = Objects.requireNonNull(mUser.getPhotoUrl()).toString();
@@ -169,7 +171,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
 
         progress(1);
 
-        uploadData(new Order(dishName, quantity, dishPrize, location,
+        uploadData(new Order(dishName, quantity, dishPrize, totalDishPrize, dishImageUri, location,
                 clintName, clintUID, clintPhotouri, orderTime, false,
                 false, false, false));
 

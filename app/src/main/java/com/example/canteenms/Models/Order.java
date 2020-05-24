@@ -5,6 +5,8 @@ public class Order {
     private String dishName;
     private String dishQuantity;
     private String dishPrize;
+    private String totalDishPrize;
+    private String dishImageUri;
     private String clintLocation;
     private String clintName;
     private String clintUID;
@@ -15,12 +17,14 @@ public class Order {
     private boolean cancelled;
     private boolean completed;
 
+
+
     public Order()
     {
 
     }
 
-    public Order(String dishName, String dishQuantity, String dishPrize,
+    public Order(String dishName, String dishQuantity, String dishPrize, String totalDishPrize, String dishImageUri,
                  String clintLocation, String clintName, String clintUID,
                  String clintPhotoUri, String orderTime, boolean accepted, boolean notify,
                  boolean cancelled, boolean completed) {
@@ -28,6 +32,8 @@ public class Order {
         this.dishName = dishName;
         this.dishQuantity = dishQuantity;
         this.dishPrize = dishPrize;
+        this.totalDishPrize = totalDishPrize;
+        this.dishImageUri = dishImageUri;
         this.clintLocation = clintLocation;
         this.clintName = clintName;
         this.clintUID = clintUID;
@@ -49,6 +55,14 @@ public class Order {
 
     public String getDishPrize() {
         return dishPrize;
+    }
+
+    public String getDishImageUri() {
+        return dishImageUri;
+    }
+
+    public String getTotalDishPrize() {
+        return totalDishPrize;
     }
 
     public String getClintLocation() {
