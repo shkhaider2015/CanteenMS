@@ -86,7 +86,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mNavigationView.setItemIconTintList(null);
        mAuth = FirebaseAuth.getInstance();
        mUser = mAuth.getCurrentUser();
-
         DatabaseReference mRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -217,6 +216,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         mDataList = new ArrayList<>();
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
+            Log.d(TAG, "onDataChange: ds" + ds);
             Food food = ds.getValue(Food.class);
             mDataList.add(food);
         }
