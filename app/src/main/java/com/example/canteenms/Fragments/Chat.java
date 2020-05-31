@@ -81,6 +81,11 @@ public class Chat extends Fragment implements View.OnClickListener, ValueEventLi
 
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot)
     {
         dataModel = new ArrayList<>();

@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,6 +65,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     private List<Food> mDataList;
 
     private int backCounter;
+    private FragmentManager fm;
+    private FrameLayout frameLayout;
 
 
     @Override
@@ -84,6 +87,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mNavigationView = findViewById(R.id.navigation);
        mGridView = findViewById(R.id.home_grid_layout);
        mProgress = findViewById(R.id.home_progress_bar);
+       frameLayout = findViewById(R.id.home_fragment_container);
 
        backCounter = 0;
        mHamburger.setOnClickListener(this);
@@ -304,15 +308,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     }
 
     private void loadFragment(Fragment fragment) {
+        frameLayout.setVisibility(View.VISIBLE);
         // create a FragmentManager
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.home_fragment_container, fragment);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit(); // save the changes
-        backCounter += 1;
+        backCounter = 1;
 
     }
 
@@ -326,10 +331,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
 
     @Override
     public void onBackPressed() {
-        if (backCounter > 0)
-            recreate();
-        else
-            super.onBackPressed();
+        if (backCounter == 1)
+        {
+            frameLayout.setVisibility(View.GONE);
+            backCounter = 0;
+            return;
+        }
+
+        super.onBackPressed();
 
     }
 }
