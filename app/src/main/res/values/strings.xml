@@ -64,5 +64,6 @@
     <string name="enter_message">Enter message</string>
     <string name="chat_room">Chat Room</string>
     <string name="chat">Chat</string>
+    <string name="not_in_stock">Not in stock</string>
 
 </resources>

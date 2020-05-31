@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     DrawerLayout drawerLayout;
     NavigationView mNavigationView;
     private GridView mGridView;
+    private ProgressBar mProgress;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -79,6 +81,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        drawerLayout = findViewById(R.id.home_drawer);
        mNavigationView = findViewById(R.id.navigation);
        mGridView = findViewById(R.id.home_grid_layout);
+       mProgress = findViewById(R.id.home_progress_bar);
 
        mHamburger.setOnClickListener(this);
        mNavigationView.setNavigationItemSelectedListener(this);
@@ -86,6 +89,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mNavigationView.setItemIconTintList(null);
        mAuth = FirebaseAuth.getInstance();
        mUser = mAuth.getCurrentUser();
+       mProgress.setVisibility(View.VISIBLE);
         DatabaseReference mRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -292,6 +296,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         GridAdapter adapter = new GridAdapter(mDataList, getApplicationContext());
         mGridView.setAdapter(adapter);
         mGridView.setOnItemClickListener(this);
+        mProgress.setVisibility(View.INVISIBLE);
 
     }
 

@@ -38,7 +38,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
     private static final String TAG = "DishDisplay";
 
     private ImageView mDishImage;
-    private TextView mDishName, mDishPrize;
+    private TextView mDishName, mDishPrize, mAvailability;
     private EditText mQuantity, mLocation;
     private Button mOrder;
     private ProgressBar mProgress;
@@ -63,6 +63,7 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
     {
         mDishImage = findViewById(R.id.display_image);
         mDishName = findViewById(R.id.display_dish);
+        mAvailability = findViewById(R.id.display_availability);
         mDishPrize = findViewById(R.id.display_prize);
         mQuantity = findViewById(R.id.display_quantity_edit);
         mLocation = findViewById(R.id.display_edittext_location);
@@ -92,6 +93,10 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         mDishName.setText(food.getFoodName());
         String prize = "Rs : " + food.getFoodPrice();
         mDishPrize.setText(prize);
+        if (food.isAvailability())
+            mAvailability.setVisibility(View.VISIBLE);
+        else
+            mAvailability.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -150,6 +155,11 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         orderTime = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
 
+        if (!food.isAvailability())
+        {
+            mAvailability.requestFocus();
+            return;
+        }
         if (quantity.isEmpty())
         {
             mQuantity.setError("Select At Least 1 Quantity");

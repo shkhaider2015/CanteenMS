@@ -35,6 +35,7 @@
         android:contentDescription="@string/image"
         />
 
+
     <TextView
         android:id="@+id/display_dish"
         android:layout_width="wrap_content"
@@ -45,6 +46,19 @@
         android:layout_marginTop="20dp"
         android:text="@string/samosa"
         android:textSize="30sp"
+        />
+    <TextView
+        android:id="@+id/display_availability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/display_dish"
+        app:layout_constraintTop_toBottomOf="@id/display_image"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/not_in_stock"
+        android:textColor="@color/red"
+        android:padding="15dp"
+        android:visibility="invisible"
         />
 
     <TextView
