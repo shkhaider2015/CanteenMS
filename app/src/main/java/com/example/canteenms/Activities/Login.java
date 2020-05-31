@@ -45,7 +45,12 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null)
+        {
             startActivity(new Intent(Login.this, Home.class));
+            this.finish();
+        }
+
+
     }
 
     private void init() {
@@ -74,6 +79,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
             case R.id.login_navigation:
                 // navigation Logic
                 startActivity(new Intent(Login.this, Register.class));
+                this.finish();
                 break;
         }
 
@@ -122,7 +128,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
                         } else {
                             Log.w(TAG, "onComplete: ", task.getException());
                             Toast.makeText(getApplicationContext(),
-                                    "Login Failed",
+                                    "Check Your Email",
                                     Toast.LENGTH_SHORT)
                                     .show();
                             progress(0);

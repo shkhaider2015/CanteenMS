@@ -55,7 +55,7 @@ public class GridAdapter extends BaseAdapter {
         Picasso
                 .get()
                 .load(food.getFoodImageUri())
-                .placeholder(R.drawable.ic_samosa)
+                .placeholder(R.mipmap.ic_spin)
                 .into(mFoodImage);
         mFoodName.setText(food.getFoodName());
 

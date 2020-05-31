@@ -63,6 +63,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
     private FirebaseUser mUser;
     private List<Food> mDataList;
 
+    private int backCounter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
        mGridView = findViewById(R.id.home_grid_layout);
        mProgress = findViewById(R.id.home_progress_bar);
 
+       backCounter = 0;
        mHamburger.setOnClickListener(this);
        mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -307,7 +310,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.home_fragment_container, fragment);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit(); // save the changes
+        backCounter += 1;
+
     }
 
     @Override
@@ -315,6 +321,15 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
 
         Food food = mDataList.get(position);
         nextActivity(food);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backCounter > 0)
+            recreate();
+        else
+            super.onBackPressed();
 
     }
 }
