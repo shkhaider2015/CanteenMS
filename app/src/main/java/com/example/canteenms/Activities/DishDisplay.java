@@ -94,9 +94,9 @@ public class DishDisplay extends AppCompatActivity implements View.OnClickListen
         String prize = "Rs : " + food.getFoodPrice();
         mDishPrize.setText(prize);
         if (food.isAvailability())
-            mAvailability.setVisibility(View.VISIBLE);
-        else
             mAvailability.setVisibility(View.INVISIBLE);
+        else
+            mAvailability.setVisibility(View.VISIBLE);
     }
 
     @Override

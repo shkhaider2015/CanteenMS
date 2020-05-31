@@ -43,7 +43,7 @@
             android:orientation="vertical"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            android:paddingTop="2.5dp"
+            android:paddingTop="2dp"
             android:paddingBottom="10dp"
             >
 

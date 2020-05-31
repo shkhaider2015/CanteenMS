@@ -70,7 +70,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         setContentView(R.layout.activity_home);
         init();
         headerUI();
-        getNotify();
+//        getNotify();
 
 
     }
