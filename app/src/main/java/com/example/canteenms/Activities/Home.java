@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -34,6 +36,7 @@ import com.example.canteenms.Fragments.Profile;
 import com.example.canteenms.Models.Dish;
 import com.example.canteenms.Models.Food;
 import com.example.canteenms.R;
+import com.example.canteenms.Services.KeepService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -76,6 +79,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         init();
         headerUI();
 //        getNotify();
+        startService(new Intent(this, KeepService.class));
 
 
     }
@@ -341,4 +345,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Nav
         super.onBackPressed();
 
     }
+
+
 }

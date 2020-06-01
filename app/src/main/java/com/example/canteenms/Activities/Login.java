@@ -3,11 +3,13 @@ package com.example.canteenms.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,7 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class Login extends AppCompatActivity  implements View.OnClickListener {
+public class Login extends AppCompatActivity  implements View.OnClickListener, View.OnFocusChangeListener {
 
     private static final String TAG = "Login";
 
@@ -59,6 +61,9 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
         mLogin = findViewById(R.id.login_log_in);
         mNavigation = findViewById(R.id.login_navigation);
         mProgressbar = findViewById(R.id.login_progress_bar);
+
+        mEmail.setOnFocusChangeListener(this);
+        mPassword.setOnFocusChangeListener(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -166,4 +171,16 @@ public class Login extends AppCompatActivity  implements View.OnClickListener {
     }
 
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            hideKeyboard(v);
+        }
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        assert inputMethodManager != null;
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

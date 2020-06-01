@@ -8,6 +8,8 @@
     tools:context=".Activities.Home"
     android:id="@+id/home_drawer"
     android:paddingBottom="20dp"
+    android:clickable="true"
+    android:focusable="true"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout

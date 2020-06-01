@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -49,7 +51,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
+public class Register extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     private static final String TAG = "Register";
     private static final int GALLERY_REQUEST_CODE = 101;
@@ -87,6 +89,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mProfileImageView.setOnClickListener(this);
         mSignUp.setOnClickListener(this);
         mNavigationText.setOnClickListener(this);
+
+        mFullName.setOnFocusChangeListener(this);
+        mEmail.setOnFocusChangeListener(this);
+        mPassword.setOnFocusChangeListener(this);
+        mConfirmPassword.setOnFocusChangeListener(this);
 
 
         img = null;
@@ -468,5 +475,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 mSignUp.setEnabled(false);
                 break;
         }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus)
+            hideKeyboard(v);
+    }
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        assert inputMethodManager != null;
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

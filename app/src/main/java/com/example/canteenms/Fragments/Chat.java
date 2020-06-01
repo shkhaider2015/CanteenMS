@@ -1,10 +1,12 @@
 package com.example.canteenms.Fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -32,8 +34,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
-public class Chat extends Fragment implements View.OnClickListener, ValueEventListener {
+public class Chat extends Fragment implements View.OnClickListener, ValueEventListener, View.OnFocusChangeListener {
 
     private static final String TAG = "Chat";
 
@@ -77,6 +80,7 @@ public class Chat extends Fragment implements View.OnClickListener, ValueEventLi
 
         mRef.addValueEventListener(this);
         mSend.setOnClickListener(this);
+        mChatText.setOnFocusChangeListener(this);
     }
 
 
@@ -175,5 +179,17 @@ public class Chat extends Fragment implements View.OnClickListener, ValueEventLi
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus)
+            hideKeyboard(v);
+
+    }
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Activity.INPUT_METHOD_SERVICE);
+        assert inputMethodManager != null;
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

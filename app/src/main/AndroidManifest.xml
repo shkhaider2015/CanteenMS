@@ -14,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_cheff_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".Services.KeepService"
+            android:enabled="true"
+            android:exported="true"/>
         <activity android:name=".Activities.DishDisplay" />
         <activity android:name=".Activities.Home" />
         <activity android:name=".Activities.Register" />
