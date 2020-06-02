@@ -3,6 +3,8 @@ package com.example.canteenms.Utilities;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -13,8 +15,11 @@ import android.util.Log;
 import com.example.canteenms.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Image {
 
@@ -168,5 +173,61 @@ public class Image {
                 break;
         }
         return image;
+    }
+
+    public static Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    public static Bitmap getPreparedImage(Uri uri, Context mCTX )
+    {
+        InputStream iStream = null;
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        byte[] preparedBytes = null;
+        Bitmap preparedBitmap = null;
+
+        try
+        {
+            iStream = mCTX.getContentResolver().openInputStream(uri);
+
+            while ((len = iStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+            preparedBytes = byteBuffer.toByteArray();
+        }catch (FileNotFoundException e)
+        {
+            Log.e(TAG, "getStream: File Not Found : ", e);
+        }catch (IOException e)
+        {
+            Log.e(TAG, "getPreparedImage: IOEXCEPTION ", e);
+        }
+
+        if (preparedBytes != null)
+            preparedBitmap = BitmapFactory.decodeByteArray(preparedBytes, 0, preparedBytes.length);
+
+
+
+
+        return preparedBitmap;
+    }
+
+    public static byte[] getImageBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 20, stream);
+        return stream.toByteArray();
     }
 }

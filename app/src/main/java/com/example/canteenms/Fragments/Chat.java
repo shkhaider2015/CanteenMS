@@ -168,6 +168,7 @@ public class Chat extends Fragment implements View.OnClickListener, ValueEventLi
                     }
                 });
 
+        mChatText.setText("");
 
     }
 

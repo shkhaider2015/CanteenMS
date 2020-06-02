@@ -8,6 +8,7 @@
     tools:context=".Activities.DishDisplay"
     android:background="@color/white"
     android:clickable="true"
+    android:focusableInTouchMode="true"
     android:focusable="true"
     >
 

@@ -11,6 +11,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -355,28 +356,32 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 int size = 0;
                 Uri uri = data.getData();
 
-                try {
-                    InputStream istream = getContentResolver().openInputStream(uri);
-                    assert istream != null;
-                    img = Image.getBytes(istream);
-                    size = img.length;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d(TAG, "onActivityResult: Image size : " + size);
-                if(size > 500000)
-                {
-                    Toast.makeText(getApplicationContext(),
-                            "Profile Picture Must Be 5KB or less",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                    img = null;
-                    return;
-                }
-                mProfileImageView.setImageURI(uri);
+                Bitmap imageBitmap = Image.getResizedBitmap(Image.getPreparedImage(uri, getApplicationContext()), 200);
+//
+//                try {
+//                    InputStream istream = getContentResolver().openInputStream(uri);
+//                    assert istream != null;
+//                    img = Image.getBytes(istream);
+//                    size = img.length;
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Log.d(TAG, "onActivityResult: Image size : " + size);
+//                if(size > 500000)
+//                {
+//                    Toast.makeText(getApplicationContext(),
+//                            "Profile Picture Must Be 5KB or less",
+//                            Toast.LENGTH_SHORT)
+//                            .show();
+//                    img = null;
+//                    return;
+//                }
+//                mProfileImageView.setImageURI(uri);
+                img = Image.getImageBytes(imageBitmap);
+                mProfileImageView.setImageBitmap(imageBitmap);
             }
             else
             {

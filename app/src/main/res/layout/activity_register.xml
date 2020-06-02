@@ -9,6 +9,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
+    android:focusableInTouchMode="true"
     >
 
     <ImageView

@@ -39,48 +39,27 @@ public class KeepService extends Service implements ValueEventListener {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: RUNS");
+        init();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand: RUNS");
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mUser != null)
-        {
-            init();
-            final Intent intent1 = intent;
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onTaskRemoved(intent1);
-                }
-            }, 6000);
-        }
-        else
-        {
-            Log.d(TAG, "onStartCommand: User is null in service");
-        }
         return START_STICKY;
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
 
-        if (mUser != null)
-        {
-
-            Intent restartServiceIntent = new Intent(getApplicationContext(),this.getClass());
-            restartServiceIntent.setPackage(getPackageName());
-            startService(restartServiceIntent);
-        }
-
         super.onTaskRemoved(rootIntent);
     }
 
     private void init()
     {
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser == null)
+            return;
+
         DatabaseReference mNotificationRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -109,7 +88,8 @@ public class KeepService extends Service implements ValueEventListener {
     }
 
     @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
+    public void onCancelled(@NonNull DatabaseError databaseError)
+    {
 
     }
 
