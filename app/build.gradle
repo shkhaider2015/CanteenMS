@@ -41,6 +41,10 @@ dependencies {
     // Picasso for taking images
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
     implementation 'com.google.android.material:material:1.1.0'
 
     implementation 'com.google.firebase:firebase-auth:19.3.1'

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.canteenms.Models.Food;
 import com.example.canteenms.R;
 import com.squareup.picasso.Picasso;
@@ -57,6 +58,7 @@ public class GridAdapter extends BaseAdapter {
                 .load(food.getFoodImageUri())
                 .placeholder(R.mipmap.ic_spin)
                 .into(mFoodImage);
+
         mFoodName.setText(food.getFoodName());
 
         return convertView;
