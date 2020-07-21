@@ -78,7 +78,7 @@ public class KeepService extends Service implements ValueEventListener {
 
             Order order = ds.getValue(Order.class);
             assert order != null;
-            if (!order.isNotify())
+            if (order.isAccepted() &&!order.isNotify())
             {
                 setNotifyToTrue(order);
             }
