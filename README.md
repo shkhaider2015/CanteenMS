@@ -20,3 +20,5 @@ Both admin panel's and mobile application's data are stored at Google Firebase d
 
 # Register
 ![alt text](https://github.com/shkhaider2015/CanteenMS/blob/master/app/src/screens/register.PNG "Register")
+
+Admin Panel repo --> https://github.com/shkhaider2015/IUSM
