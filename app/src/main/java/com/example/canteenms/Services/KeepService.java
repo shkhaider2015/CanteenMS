@@ -29,27 +29,31 @@ public class KeepService extends Service implements ValueEventListener {
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent intent)
+    {
 
         Log.d(TAG, "onBind: RUNS");
         return null;
     }
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
         Log.d(TAG, "onCreate: RUNS");
         init();
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
 
         return START_STICKY;
     }
 
     @Override
-    public void onTaskRemoved(Intent rootIntent) {
+    public void onTaskRemoved(Intent rootIntent)
+    {
 
         super.onTaskRemoved(rootIntent);
     }
